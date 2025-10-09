@@ -1,3 +1,4 @@
+using Booking.System.LoyaltyService.DataBase.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace Booking.System.LoyaltyService.Extensions;
@@ -8,7 +9,7 @@ public static class HostProviderExtensions
     {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-        services.AddDbContext<PersonContext>(options =>
+        services.AddDbContext<LoyaltyContext>(options =>
         {
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
         });

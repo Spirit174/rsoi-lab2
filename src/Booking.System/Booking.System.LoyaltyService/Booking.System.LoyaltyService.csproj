@@ -30,7 +30,6 @@
       <Folder Include="Controllers\" />
       <Folder Include="Core\Models\" />
       <Folder Include="DataBase\Converters\" />
-      <Folder Include="DataBase\Models\" />
       <Folder Include="DataBase\Repositories\" />
       <Folder Include="DTO\Converters\" />
       <Folder Include="DTO\Models\" />

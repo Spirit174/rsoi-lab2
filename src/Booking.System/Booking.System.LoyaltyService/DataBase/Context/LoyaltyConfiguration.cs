@@ -1,15 +1,19 @@
+using Booking.System.LoyaltyService.DataBase.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 namespace Booking.System.LoyaltyService.DataBase.Context;
 
-public class LoyaltyConfiguration : IEntityTypeConfiguration<>
+public class LoyaltyConfiguration : IEntityTypeConfiguration<DbLoyalty>
 {
-    public void Configure(EntityTypeBuilder<> builder)
+    public void Configure(EntityTypeBuilder<DbLoyalty> builder)
     {
-        builder.HasIndex(person => person.Id).IsUnique();
-        builder.HasKey(person => person.Id);
+        builder.HasIndex(loyalty => loyalty.Id).IsUnique();
+        builder.HasKey(loyalty => loyalty.Id);
 
-        builder.Property(person => person.Id).IsRequired();
+        builder.Property(loyalty => loyalty.Id).IsRequired();
 
-        builder.Property(person => person.Name).IsRequired();
+        builder.Property(loyalty => loyalty.Username).IsRequired();
     }
 }
 

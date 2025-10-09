@@ -1,3 +1,4 @@
+using Booking.System.LoyaltyService.Extensions;
 using Microsoft.OpenApi.Models;
 
 namespace Booking.System.LoyaltyService;
