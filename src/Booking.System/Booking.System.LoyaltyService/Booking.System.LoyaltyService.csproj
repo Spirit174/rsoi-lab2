@@ -26,13 +26,4 @@
         <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="9.0.6" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Controllers\" />
-      <Folder Include="Core\Models\" />
-      <Folder Include="DataBase\Converters\" />
-      <Folder Include="DataBase\Repositories\" />
-      <Folder Include="DTO\Converters\" />
-      <Folder Include="DTO\Models\" />
-    </ItemGroup>
-
 </Project>

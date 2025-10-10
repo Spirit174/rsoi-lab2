@@ -1,8 +1,8 @@
-﻿using Booking.System.LoyaltyService.DataBase.Models.Enums;
+﻿using Booking.System.LoyaltyService.Core.Models.Enums;
 
-namespace Booking.System.LoyaltyService.DataBase.Models;
+namespace Booking.System.LoyaltyService.Core.Models;
 
-public class DbLoyalty
+public class Loyalty
 {
     public Guid Id { get; set; }
     
@@ -14,7 +14,7 @@ public class DbLoyalty
     
     public int Discount { get; set; }
 
-    public DbLoyalty(Guid id,
+    public Loyalty(Guid id,
         string username,
         int reservationCount,
         LoyaltyStatus status,
@@ -27,4 +27,3 @@ public class DbLoyalty
         Discount = discount;
     }
 }
-

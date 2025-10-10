@@ -17,7 +17,6 @@ public class BookingController: ControllerBase
     /// <summary>
     /// Получить список отелей.
     /// </summary>
-    /// <remarks>Метод для получения пагинированного списка отелей.</remarks>
     /// <param name="page">Номер страницы.</param>
     /// <param name="size">Размер страницы.</param>
     /// <response code="200">Список отелей успешно получен.</response>
@@ -38,7 +37,6 @@ public class BookingController: ControllerBase
     /// <summary>
     /// Получить информацию о пользователе.
     /// </summary>
-    /// <remarks>Метод возвращает информацию о бронированиях и статусе в системе лояльности.</remarks>
     /// <response code="200">Информация о пользователе успешно получена.</response>
     /// <response code="400">Отсутствует заголовок.</response>
     /// <response code="404">Пользователь не найден.</response>
@@ -63,7 +61,6 @@ public class BookingController: ControllerBase
     /// <summary>
     /// Получить информацию по всем бронированиям пользователя.
     /// </summary>
-    /// <remarks>Метод возвращает список всех бронирований текущего пользователя.</remarks>
     /// <response code="200">Список бронирований успешно получен.</response>
     /// <response code="400">Отсутствует заголовок.</response>
     /// <response code="500">Ошибка на стороне сервера.</response>
@@ -118,7 +115,7 @@ public class BookingController: ControllerBase
     /// <response code="404">Отель не найден.</response>
     /// <response code="409">Конфликт при создании бронирования.</response>
     /// <response code="500">Ошибка на стороне сервера.</response>
-    [HttpPost("/hotels")]
+    [HttpPost("/reservations")]
     [SwaggerOperation("Метод для бронирования отеля.", "Метод для бронирования отеля.")]
     [SwaggerResponse(statusCode: 201, description: "Бронирование успешно создано.")]
     [SwaggerResponse(statusCode: 400, type: typeof(ErrorResponse), description: "Отсутствует заголовок или невалидные данные запроса.")]
@@ -146,4 +143,59 @@ public class BookingController: ControllerBase
         }
     }
     
+    /// <summary>
+    /// Отменить бронирование.
+    /// </summary>
+    /// <param name="reservationUid">UID бронирования для отмены.</param>
+    /// <response code="204">Бронирование успешно отменено.</response>
+    /// <response code="400">Отсутствует заголовок.</response>
+    /// <response code="404">Бронирование не найдено.</response>
+    /// <response code="500">Ошибка на стороне сервера.</response>
+    [HttpDelete("/reservations/{reservationUid}")]
+    [SwaggerOperation("Метод для отмены бронирования отеля.", "Метод для отмены бронирования отеля.")]
+    [SwaggerResponse(statusCode: 204, description: "Бронирование успешно отменено.")]
+    [SwaggerResponse(statusCode: 400, type: typeof(ErrorResponse), description: "Отсутствует заголовок.")]
+    [SwaggerResponse(statusCode: 404, type: typeof(ErrorResponse), description: "Бронирование не найдено.")]
+    [SwaggerResponse(statusCode: 500, type: typeof(ErrorResponse), description: "Ошибка на стороне сервера.")]
+    public async Task<IActionResult> CancelReservation(Guid reservationUid)
+    {
+        var username = Request.Headers["X-User-Name"].FirstOrDefault();
+        if (string.IsNullOrEmpty(username))
+            return BadRequest("X-User-Name header is required");
+
+        var success = await _reservationService.CancelReservationAsync(reservationUid, username);
+        if (!success)
+            return NotFound();
+
+        return NoContent();
+    }
+    
+    /// <summary>
+    /// Получить информацию о статусе в программе лояльности.
+    /// </summary>
+    /// <response code="200">Информация о статусе лояльности успешно получена.</response>
+    /// <response code="400">Отсутствует заголовок.</response>
+    /// <response code="404">Информация о программе лояльности не найдена.</response>
+    /// <response code="500">Ошибка на стороне сервера.</response>
+    [HttpGet("/loyalty")]
+    [SwaggerOperation("Метод для получения статуса лояльности.", "Метод для получения статуса лояльности.")]
+    [SwaggerResponse(statusCode: 200, description: "Статус лояльности успешно получен.")]
+    [SwaggerResponse(statusCode: 400, type: typeof(ErrorResponse), description: "Отсутствует заголовок.")]
+    [SwaggerResponse(statusCode: 404, type: typeof(ErrorResponse), description: "Информация о программе лояльности не найдена.")]
+    [SwaggerResponse(statusCode: 500, type: typeof(ErrorResponse), description: "Ошибка на стороне сервера.")]
+    public async Task<ActionResult<LoyaltyInfoDto>> GetLoyaltyInfo()
+    {
+        var username = Request.Headers["X-User-Name"].FirstOrDefault();
+        if (string.IsNullOrEmpty(username))
+            return BadRequest("X-User-Name header is required");
+
+        var loyaltyInfo = await _loyaltyService.GetLoyaltyInfoAsync(username);
+        return Ok(loyaltyInfo);
+    }
+    
+    [HttpGet("manage/health")]
+    public IActionResult Health()
+    {
+        return Ok();
+    }
 }

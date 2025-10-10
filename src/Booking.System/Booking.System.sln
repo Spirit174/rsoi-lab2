@@ -8,6 +8,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Booking.System.PaymentServi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Booking.System.LoyaltyService", "Booking.System.LoyaltyService\Booking.System.LoyaltyService.csproj", "{9BB817BD-CA33-470B-8EAF-920A931D57E8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3CFDB82D-2178-498F-AE66-8C6C13FDAB40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{13110911-AA91-4EB0-861C-A46F97E90756}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +34,12 @@ Global
 		{9BB817BD-CA33-470B-8EAF-920A931D57E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BB817BD-CA33-470B-8EAF-920A931D57E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BB817BD-CA33-470B-8EAF-920A931D57E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13110911-AA91-4EB0-861C-A46F97E90756}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13110911-AA91-4EB0-861C-A46F97E90756}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13110911-AA91-4EB0-861C-A46F97E90756}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13110911-AA91-4EB0-861C-A46F97E90756}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{13110911-AA91-4EB0-861C-A46F97E90756} = {3CFDB82D-2178-498F-AE66-8C6C13FDAB40}
 	EndGlobalSection
 EndGlobal

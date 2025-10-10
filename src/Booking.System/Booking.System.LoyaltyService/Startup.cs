@@ -1,3 +1,5 @@
+using Booking.System.LoyaltyService.Core.Interfaces;
+using Booking.System.LoyaltyService.DataBase.Repositories;
 using Booking.System.LoyaltyService.Extensions;
 using Microsoft.OpenApi.Models;
 
@@ -24,6 +26,9 @@ public class Startup
         services.AddSwaggerGenNewtonsoftSupport();
         
         services.AddDbContext(Configuration);
+        
+        services.AddScoped<ILoyaltyRepository, LoyaltyRepostirory>();
+        services.AddScoped<ILoyaltyService, Core.Services.LoyaltyService>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
