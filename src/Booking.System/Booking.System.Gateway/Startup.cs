@@ -1,3 +1,4 @@
+using Booking.System.Gateway.ApiClients;
 using Microsoft.OpenApi.Models;
 
 namespace Booking.System.Gateway;
@@ -21,6 +22,10 @@ public class Startup
 
         });
         services.AddSwaggerGenNewtonsoftSupport();
+        
+        services.Configure<ClientsConfiguration>(Configuration.GetSection(nameof(ClientsConfiguration)));
+        
+        services.AddSingleton<ILoyaltyClient, LoyaltyClient>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

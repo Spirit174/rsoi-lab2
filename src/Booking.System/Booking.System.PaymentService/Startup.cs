@@ -1,3 +1,6 @@
+using Booking.System.PaymentService.Core.Interfaces;
+using Booking.System.PaymentService.DataBase.Repositories;
+using Booking.System.PaymentService.Extensions;
 using Microsoft.OpenApi.Models;
 
 namespace Booking.System.PaymentService;
@@ -23,6 +26,9 @@ public class Startup
         services.AddSwaggerGenNewtonsoftSupport();
         
         services.AddDbContext(Configuration);
+        
+        services.AddScoped<IPaymentRepository, PaymentRepository>();
+        services.AddScoped<IPaymentService, Core.Services.PaymentService>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

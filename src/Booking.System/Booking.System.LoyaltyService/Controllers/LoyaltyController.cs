@@ -43,14 +43,14 @@ public class LoyaltyController: ControllerBase
     /// <summary>
     /// Обновить после бронирования или отмены бронирования.
     /// </summary>
-    [HttpPut("/loyalty/{userName}")]
-    public async Task<ActionResult<LoyaltyInfoDto>> UpdateLoyalty([FromRoute] string userName, [FromBody] bool isIncrease)
+    [HttpPost("/loyalty/{userName}")]
+    public async Task<ActionResult> UpdateLoyalty([FromRoute] string userName, [FromBody] IncreaseBool isIncreaseBool)
     {
         try
         {
             var loyalty = await _loyaltyService.GetLoyaltyAndCreateIfNotExist(userName);
 
-            await _loyaltyService.UpdateLoyalty(loyalty.Username, isIncrease);
+            await _loyaltyService.UpdateLoyalty(loyalty.Username, isIncreaseBool.IsIncrease);
 
             return Ok();
         }

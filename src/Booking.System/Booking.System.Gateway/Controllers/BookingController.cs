@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Booking.System.Gateway.ApiClients;
+using Booking.System.Gateway.DTO;
+using Booking.System.LoyaltyService.DTO.Models;
+using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Booking.System.Gateway.Controllers;
@@ -8,10 +11,13 @@ namespace Booking.System.Gateway.Controllers;
 public class BookingController: ControllerBase
 {
     private readonly ILogger<BookingController> _logger;
+    private readonly ILoyaltyClient _loyaltyClient;
 
-    public BookingController(ILogger<BookingController> logger)
+    public BookingController(ILogger<BookingController> logger,
+        ILoyaltyClient loyaltyClient)
     {
         _logger = logger;
+        _loyaltyClient = loyaltyClient;
     }
 
     /// <summary>
@@ -53,7 +59,9 @@ public class BookingController: ControllerBase
         
         if (string.IsNullOrEmpty(username))
             return BadRequest("X-User-Name header is required");
-
+        
+        var loyaltyInfo = await _loyaltyClient.GetLoyaltyAsync(username);
+        
         var userInfo = await _userService.GetUserInfoAsync(username);
         return Ok(userInfo);
     }
@@ -119,8 +127,6 @@ public class BookingController: ControllerBase
     [SwaggerOperation("Метод для бронирования отеля.", "Метод для бронирования отеля.")]
     [SwaggerResponse(statusCode: 201, description: "Бронирование успешно создано.")]
     [SwaggerResponse(statusCode: 400, type: typeof(ErrorResponse), description: "Отсутствует заголовок или невалидные данные запроса.")]
-    [SwaggerResponse(statusCode: 404, type: typeof(ErrorResponse), description: "Отель не найден.")]
-    [SwaggerResponse(statusCode: 409, type: typeof(ErrorResponse), description: "Конфликт при создании бронирования")]
     [SwaggerResponse(statusCode: 500, type: typeof(ErrorResponse), description: "Ошибка на стороне сервера.")]
     public async Task<ActionResult<ReservationDto>> CreateReservation([FromBody] CreateReservationRequest request)
     {
@@ -130,16 +136,23 @@ public class BookingController: ControllerBase
 
         try
         {
+            var loyaltyInfo = await _loyaltyClient.GetLoyaltyAsync(username);
+            
             var reservation = await _reservationService.CreateReservationAsync(username, request);
+            
+            await _loyaltyClient.UpdateLoyaltyReservationCountAsync(username, true);
+            
             return CreatedAtAction(nameof(GetReservation), new { reservationUid = reservation.ReservationUid }, reservation);
         }
         catch ( ex)
         {
             return BadRequest(ex.Message);
         }
-        catch ( ex)
+        catch (Exception e)
         {
-            return Conflict(ex.Message);
+            _logger.LogError(e, "Unexpected exception while processing request in loyalty service");
+
+            return StatusCode(500, new ErrorResponse("Неожиданная ошибка на стороне сервера."));
         }
     }
     
@@ -166,6 +179,8 @@ public class BookingController: ControllerBase
         var success = await _reservationService.CancelReservationAsync(reservationUid, username);
         if (!success)
             return NotFound();
+        
+        await _loyaltyClient.UpdateLoyaltyReservationCountAsync(username, false);
 
         return NoContent();
     }
@@ -181,16 +196,24 @@ public class BookingController: ControllerBase
     [SwaggerOperation("Метод для получения статуса лояльности.", "Метод для получения статуса лояльности.")]
     [SwaggerResponse(statusCode: 200, description: "Статус лояльности успешно получен.")]
     [SwaggerResponse(statusCode: 400, type: typeof(ErrorResponse), description: "Отсутствует заголовок.")]
-    [SwaggerResponse(statusCode: 404, type: typeof(ErrorResponse), description: "Информация о программе лояльности не найдена.")]
     [SwaggerResponse(statusCode: 500, type: typeof(ErrorResponse), description: "Ошибка на стороне сервера.")]
     public async Task<ActionResult<LoyaltyInfoDto>> GetLoyaltyInfo()
     {
         var username = Request.Headers["X-User-Name"].FirstOrDefault();
         if (string.IsNullOrEmpty(username))
             return BadRequest("X-User-Name header is required");
+        
+        try
+        {
+            var loyaltyInfo = await _loyaltyClient.GetLoyaltyAsync(username);
+            return Ok(loyaltyInfo);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Unexpected exception while processing request in loyalty service");
 
-        var loyaltyInfo = await _loyaltyService.GetLoyaltyInfoAsync(username);
-        return Ok(loyaltyInfo);
+            return StatusCode(500, new ErrorResponse("Неожиданная ошибка на стороне сервера."));
+        }
     }
     
     [HttpGet("manage/health")]
@@ -198,4 +221,5 @@ public class BookingController: ControllerBase
     {
         return Ok();
     }
+    
 }
