@@ -47,7 +47,12 @@ public class Startup
             c.RoutePrefix = "api/v1/swagger";
         });
         app.UseRouting();
+        
 
-        app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers(); 
+            endpoints.MapGet("/manage/health", () => Results.Ok(new { status = "Healthy", service = "gateway" }));
+        });
     }
 }
