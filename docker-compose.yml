@@ -23,7 +23,7 @@ services:
     container_name: loyalty_service
     build:
       context: src
-      dockerfile: Booking.System.LoyaltyService/Dockerfile
+      dockerfile: Booking.System/Booking.System.LoyaltyService/Dockerfile
     depends_on:
       postgres:
         condition: service_healthy
@@ -34,7 +34,7 @@ services:
     container_name: payment_service
     build:
       context: src
-      dockerfile: Booking.System.PaymentService/Dockerfile
+      dockerfile: Booking.System/Booking.System.PaymentService/Dockerfile
     depends_on:
       postgres:
         condition: service_healthy
@@ -45,7 +45,7 @@ services:
     container_name: reservation_service
     build:
       context: src
-      dockerfile: Booking.System.ReservationService/Dockerfile
+      dockerfile: Booking.System/Booking.System.ReservationService/Dockerfile
     depends_on:
       postgres:
         condition: service_healthy
@@ -56,7 +56,7 @@ services:
     container_name: gateway_service
     build:
       context: src
-      dockerfile: Booking.System.Gateway/Dockerfile
+      dockerfile: Booking.System/Booking.System.Gateway/Dockerfile
     depends_on:
       postgres:
         condition: service_healthy

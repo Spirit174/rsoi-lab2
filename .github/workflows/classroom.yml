@@ -26,17 +26,17 @@ jobs:
 
       - name: Install dependencies
         run: |
-          dotnet restore ./src/Booking.System.LoyaltyService/Booking.System.LoyaltyService.csproj
-          dotnet restore ./src/Booking.System.PaymentService/Booking.System.PaymentService.csproj
-          dotnet restore ./src/Booking.System.ReservationService/Booking.System.ReservationService.csproj
-          dotnet restore ./src/Booking.System.Gateway/Booking.System.Gateway.csproj
+          dotnet restore ./src/Booking.System/Booking.System.LoyaltyService/Booking.System.LoyaltyService.csproj
+          dotnet restore ./src/Booking.System/Booking.System.PaymentService/Booking.System.PaymentService.csproj
+          dotnet restore ./src/Booking.System/Booking.System.ReservationService/Booking.System.ReservationService.csproj
+          dotnet restore ./src/Booking.System/Booking.System.Gateway/Booking.System.Gateway.csproj
 
       - name: Build
         run: |
-          dotnet publish ./src/Booking.System.LoyaltyService/Booking.System.LoyaltyService.csproj -c Release
-          dotnet publish ./src/Booking.System.PaymentService/Booking.System.PaymentService.csproj -c Release
-          dotnet publish ./src/Booking.System.ReservationService/Booking.System.ReservationService.csproj -c Release
-          dotnet publish ./src/Booking.System.Gateway/Booking.System.Gateway.csproj -c Release
+          dotnet publish ./src/Booking.System/Booking.System.LoyaltyService/Booking.System.LoyaltyService.csproj -c Release
+          dotnet publish ./src/Booking.System/Booking.System.PaymentService/Booking.System.PaymentService.csproj -c Release
+          dotnet publish ./src/Booking.System/Booking.System.ReservationService/Booking.System.ReservationService.csproj -c Release
+          dotnet publish ./src/Booking.System/Booking.System.Gateway/Booking.System.Gateway.csproj -c Release
 
       - name: Run Tests
         run: dotnet test ./src
