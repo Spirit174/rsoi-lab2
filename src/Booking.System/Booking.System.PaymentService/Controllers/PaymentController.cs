@@ -25,6 +25,7 @@ public class PaymentController: ControllerBase
     [HttpPut("/payment/{paymentId}")]
     public async Task<ActionResult> UpdatePayment([FromRoute] Guid paymentId)
     {
+        _logger.LogInformation($"UpdatePayment: {paymentId}");
         try
         {
             if (await _paymentService.CancelPayment(paymentId))
@@ -48,6 +49,7 @@ public class PaymentController: ControllerBase
     [HttpPost("/payment/{price}")]
     public async Task<ActionResult<PaymentIdDto>> CreatePayment([FromRoute] int price)
     {
+        _logger.LogInformation($"CreatePayment: {price}");
         try
         {
             var paymentId = await _paymentService.CreatePayment(price);
@@ -68,6 +70,7 @@ public class PaymentController: ControllerBase
     [HttpGet("/payment/{paymentId}")]
     public async Task<ActionResult<PaymentInfoDto>> GetPayment([FromRoute] Guid paymentId)
     {
+        _logger.LogInformation($"GetPayment: {paymentId}");
         try
         {
             var payment = await _paymentService.GetPayment(paymentId);

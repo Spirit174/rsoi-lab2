@@ -25,6 +25,7 @@ public class ReservationController: ControllerBase
     [HttpPost("/reservations/{reservationId}")]
     public async Task<ActionResult> CancelReservation([FromRoute] Guid reservationId)
     {
+        _logger.LogInformation($"CancelReservation: {reservationId}");
         try
         {
             if (!await _reservationService.CancelReservation(reservationId))
@@ -46,6 +47,7 @@ public class ReservationController: ControllerBase
     [HttpGet("/reservations/{reservationId}")]
     public async Task<ActionResult<ReservationDto>> GetReservationId([FromRoute] Guid reservationId)
     {
+        _logger.LogInformation($"GetReservationId: {reservationId}");
         try
         {
             var reservation = await _reservationService.GetReservationByReservationIdAsync(reservationId);
@@ -69,6 +71,7 @@ public class ReservationController: ControllerBase
     [HttpPost("/reservations")]
     public async Task<ActionResult> CreateReservation([FromBody] CreateReservationDto createReservationDto)
     {
+        _logger.LogInformation($"CreateReservation: {createReservationDto}");
         try
         {
             await _reservationService.CreateReservationAsync(createReservationDto.Username, createReservationDto.PaymentUid,
@@ -90,6 +93,7 @@ public class ReservationController: ControllerBase
     [HttpGet("/reservations/user/{userName}")]
     public async Task<ActionResult<List<ReservationDto>>> GetReservationsById([FromRoute] string userName)
     {
+        _logger.LogInformation($"GetReservationsById: {userName}");
         try
         {
             var reservations = await _reservationService.GetReservationByUserNameAsync(userName);

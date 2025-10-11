@@ -25,6 +25,7 @@ public class HotelController: ControllerBase
     [HttpGet("/hotels")]
     public async Task<ActionResult<HotelPagesDto>> GetHotelsPages([FromQuery] int page, [FromQuery] int size)
     {
+        _logger.LogInformation($"GetHotelsPages: {page}/{size}");
         try
         {
             var hotels = await _hotelService.GetHotelsByPagesAsync(page, size);
@@ -45,6 +46,7 @@ public class HotelController: ControllerBase
     [HttpGet("/hotels/{hotelId}")]
     public async Task<ActionResult<HotelDto>> GetHotelById([FromRoute] Guid hotelId)
     {
+        _logger.LogInformation($"GetHotelById: {hotelId}");
         try
         {
             var hotel = await _hotelService.GetHotelByHotelIdAsync(hotelId);
