@@ -39,7 +39,7 @@ jobs:
           dotnet publish ./src/Booking.System/Booking.System.Gateway/Booking.System.Gateway.csproj -c Release
 
       - name: Run Tests
-        run: dotnet test ./src
+        run: dotnet test ./src/Booking.System/
 
       - name: Build images
         timeout-minutes: 10
