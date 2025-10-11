@@ -6,7 +6,7 @@ EXPOSE 8050
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Booking.System/Booking.System.LoyaltyService/Booking.System.LoyaltyService.csproj", "Booking.System.LoyaltyService/"]
+COPY ["Booking.System/Booking.System.LoyaltyService/Booking.System.LoyaltyService.csproj", "Booking.System/Booking.System.LoyaltyService/"]
 RUN dotnet restore "./Booking.System/Booking.System.LoyaltyService/Booking.System.LoyaltyService.csproj"
 COPY . .
 WORKDIR "/src/Booking.System/Booking.System.LoyaltyService"
