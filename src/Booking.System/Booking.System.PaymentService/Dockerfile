@@ -10,7 +10,7 @@ COPY ["Booking.System/Booking.System.PaymentService/Booking.System.PaymentServic
 RUN dotnet restore "./Booking.System/Booking.System.PaymentService/Booking.System.PaymentService.csproj"
 COPY . .
 WORKDIR "/src/Booking.System/Booking.System.PaymentService"
-RUN dotnet build "/Booking.System.PaymentService.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "Booking.System.PaymentService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
