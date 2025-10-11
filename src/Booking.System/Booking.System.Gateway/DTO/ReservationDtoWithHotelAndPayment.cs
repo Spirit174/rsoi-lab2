@@ -2,9 +2,9 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
-namespace Booking.System.ReservationService.DTO.Models;
+namespace Booking.System.Gateway.DTO;
 
-public class ReservationDto
+public class ReservationDtoWithHotelAndPayment
 {
     /// <summary>
     /// Идентификатор брони.
@@ -15,7 +15,15 @@ public class ReservationDto
     public Guid ReservationUid { get; set; }
     
     /// <summary>
-    /// Начало бррони.
+    /// Отель.
+    /// </summary>
+    [Required]
+    [DataMember(Name = "hotel")]
+    [JsonPropertyName("hotel")]
+    public HotelDtoWithFullAddress Hotel { get; set; }
+    
+    /// <summary>
+    /// Начало брони.
     /// </summary>
     [Required]
     [DataMember(Name = "startDate")]
@@ -23,7 +31,7 @@ public class ReservationDto
     public DateTime StartDate { get; set; }
     
     /// <summary>
-    /// Конец бррони.
+    /// Конец брони.
     /// </summary>
     [Required]
     [DataMember(Name = "endDate")]
@@ -37,15 +45,28 @@ public class ReservationDto
     [DataMember(Name = "status")]
     [JsonPropertyName("status")]
     public string Status { get; set; }
-
-    public ReservationDto(Guid reservationUid,
+    
+    /// <summary>
+    /// Платеж.
+    /// </summary>
+    [Required]
+    [DataMember(Name = "payment")]
+    [JsonPropertyName("payment")]
+    public PaymentInfoDto Payment { get; set; }
+    
+    public ReservationDtoWithHotelAndPayment(Guid reservationUid,
+        HotelDtoWithFullAddress hotelDtoWithFullAddress,
         DateTime startDate,
         DateTime endDate,
-        string status)
+        string status,
+        PaymentInfoDto payment)
     {
         ReservationUid = reservationUid;
+        Hotel = hotelDtoWithFullAddress;
         StartDate = startDate;
         EndDate = endDate;
         Status = status;
+        Payment = payment;
     }
 }
+

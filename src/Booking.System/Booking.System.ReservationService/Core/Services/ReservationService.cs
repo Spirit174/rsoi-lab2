@@ -1,6 +1,6 @@
 ﻿using Booking.System.ReservationService.Core.Interfaces;
 using Booking.System.ReservationService.Core.Models;
-using Booking.System.ReservationService.DataBase.Models.Enums;
+using Booking.System.ReservationService.Core.Models.Enums;
 
 namespace Booking.System.ReservationService.Core.Services;
 
@@ -20,7 +20,7 @@ public class ReservationService: IReservationService
     {
         _logger.LogDebug("Creating reservation for user with username: {UserName}", userName);
         var reservation = new Reservation(Guid.NewGuid(), Guid.NewGuid(), userName, paymentUid, hotelUid,
-            DbPaymentStatus.PAID, startDate, endDate);
+            PaymentStatus.PAID, startDate, endDate);
         await _reservationRepository.CreateReservationAsync(reservation);
         _logger.LogInformation("Successfully created reservation with id: {ReservationUid}", reservation.ReservationUid);
     }

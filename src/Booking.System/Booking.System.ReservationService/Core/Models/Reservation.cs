@@ -1,4 +1,4 @@
-﻿using Booking.System.ReservationService.DataBase.Models.Enums;
+﻿using Booking.System.ReservationService.Core.Models.Enums;
 
 namespace Booking.System.ReservationService.Core.Models;
 
@@ -14,7 +14,7 @@ public class Reservation
     
     public Guid HotelUid { get; set; }
     
-    public DbPaymentStatus Status { get; set; }
+    public PaymentStatus Status { get; set; }
     
     public DateTime StartDate { get; set; }
     
@@ -25,7 +25,7 @@ public class Reservation
         string username,
         Guid paymentUid,
         Guid hotelUid,
-        DbPaymentStatus status,
+        PaymentStatus status,
         DateTime startDate,
         DateTime endDate)
     {

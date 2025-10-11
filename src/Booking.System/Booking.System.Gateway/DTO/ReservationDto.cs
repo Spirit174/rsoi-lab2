@@ -2,7 +2,7 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
-namespace Booking.System.ReservationService.DTO.Models;
+namespace Booking.System.Gateway.DTO;
 
 public class ReservationDto
 {

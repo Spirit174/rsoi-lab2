@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Booking.System.PaymentService.Controllers;
 
+[ApiController]
+[Route("/api/v1")]
 public class PaymentController: ControllerBase
 {
     private readonly IPaymentService _paymentService;

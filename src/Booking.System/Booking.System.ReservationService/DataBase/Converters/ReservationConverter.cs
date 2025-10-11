@@ -1,4 +1,5 @@
 ﻿using Booking.System.ReservationService.Core.Models;
+using Booking.System.ReservationService.DataBase.Converters.Enums;
 using Booking.System.ReservationService.DataBase.Models;
 
 namespace Booking.System.ReservationService.DataBase.Converters;
@@ -13,7 +14,7 @@ public class ReservationConverter
             reservation.Username,
             reservation.PaymentUid,
             reservation.HotelUid,
-            reservation.Status,
+            PaymentStatusConverter.Convert(reservation.Status),
             reservation.StartDate,
             reservation.EndDate);
     }
@@ -25,7 +26,7 @@ public class ReservationConverter
             reservation.Username,
             reservation.PaymentUid,
             reservation.HotelUid,
-            reservation.Status,
+            PaymentStatusConverter.Convert(reservation.Status),
             reservation.StartDate,
             reservation.EndDate);
     }

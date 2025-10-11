@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Booking.System.ReservationService.Controllers;
 
+[ApiController]
+[Route("/api/v1")]
 public class HotelController: ControllerBase
 {
     private readonly IHotelService _hotelService;
@@ -21,11 +23,11 @@ public class HotelController: ControllerBase
     /// Получить страницу отелей.
     /// </summary>
     [HttpGet("/hotels")]
-    public async Task<ActionResult<HotelPagesDto>> GetHotelsPages([FromBody] PageAndSize pageAndSize)
+    public async Task<ActionResult<HotelPagesDto>> GetHotelsPages([FromQuery] int page, [FromQuery] int size)
     {
         try
         {
-            var hotels = await _hotelService.GetHotelsByPagesAsync(pageAndSize.Page, pageAndSize.Size);
+            var hotels = await _hotelService.GetHotelsByPagesAsync(page, size);
 
             return Ok(HotelPagesDtoConverter.Convert(hotels));
         }
@@ -41,7 +43,7 @@ public class HotelController: ControllerBase
     /// Получить отель по идентификатору.
     /// </summary>
     [HttpGet("/hotels/{hotelId}")]
-    public async Task<ActionResult<HotelDto>> GetHotelsPages([FromRoute] Guid hotelId)
+    public async Task<ActionResult<HotelDto>> GetHotelById([FromRoute] Guid hotelId)
     {
         try
         {

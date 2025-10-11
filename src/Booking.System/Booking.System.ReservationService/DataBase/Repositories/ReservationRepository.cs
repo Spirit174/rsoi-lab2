@@ -50,13 +50,13 @@ public class ReservationRepository : IReservationRepository
     {
         _logger.LogDebug("Getting reservations with id: {ReservationUid}", reservationUid);
 
-        var reservation = await GetReservationByReservationIdAsync(reservationUid);
-        if (reservation is null)
+        var dbReservation = await _context.Reservations.FirstOrDefaultAsync(p => p.ReservationUid == reservationUid);
+        if (dbReservation is null)
             return false;
         
         _logger.LogDebug("Cancel reservation with id: {ReservationUid}", reservationUid);
-
-        reservation.Status = DbPaymentStatus.CANCELED;
+        
+        dbReservation.Status = DbPaymentStatus.CANCELED;
         await _context.SaveChangesAsync();
         
         _logger.LogInformation("Successfully Canceled reservation with id: {ReservationUid}", reservationUid);

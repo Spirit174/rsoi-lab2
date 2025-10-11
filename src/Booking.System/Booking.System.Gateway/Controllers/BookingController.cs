@@ -1,4 +1,5 @@
-﻿using Booking.System.Gateway.ApiClients;
+﻿using System.Security.Cryptography.X509Certificates;
+using Booking.System.Gateway.ApiClients;
 using Booking.System.Gateway.DTO;
 using Booking.System.LoyaltyService.DTO.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -12,12 +13,18 @@ public class BookingController: ControllerBase
 {
     private readonly ILogger<BookingController> _logger;
     private readonly ILoyaltyClient _loyaltyClient;
+    private readonly IPaymentClient _paymentClient;
+    private readonly IReservationClient _reservationClient;
 
     public BookingController(ILogger<BookingController> logger,
-        ILoyaltyClient loyaltyClient)
+        ILoyaltyClient loyaltyClient,
+        IPaymentClient paymentClient,
+        IReservationClient reservationClient)
     {
         _logger = logger;
         _loyaltyClient = loyaltyClient;
+        _paymentClient = paymentClient;
+        _reservationClient = reservationClient;
     }
 
     /// <summary>
@@ -26,18 +33,25 @@ public class BookingController: ControllerBase
     /// <param name="page">Номер страницы.</param>
     /// <param name="size">Размер страницы.</param>
     /// <response code="200">Список отелей успешно получен.</response>
-    /// <response code="400">Неверные параметры.</response>
     /// <response code="500">Ошибка на стороне сервера.</response>
     [HttpGet("/hotels")]
     [SwaggerOperation("Метод для получения списка отелей.", "Метод для получения списка отелей.")]
     [SwaggerResponse(statusCode: 200, description: "Список отелей успешно получен.")]
-    [SwaggerResponse(statusCode: 400, type: typeof(ErrorResponse), description: "Неверные параметры.")]
     [SwaggerResponse(statusCode: 500, type: typeof(ErrorResponse), description: "Ошибка на стороне сервера.")]
-    public async Task<ActionResult<HotelDto>> GetHotels([FromQuery] int page = 1,
+    public async Task<ActionResult<HotelPagesDto>> GetHotels([FromQuery] int page = 1,
         [FromQuery] int size = 10)
     {
-        var hotels = await _hotelService.GetHotelsAsync(page, size);
-        return Ok(hotels);
+        try
+        {
+            var pages = await _reservationClient.GetHotelsPageAsync(page, size);
+            return Ok(pages);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Unexpected exception while processing request in reservation service");
+
+            return StatusCode(500, new ErrorResponse("Неожиданная ошибка на стороне сервера."));
+        }
     }
     
     /// <summary>

@@ -2,10 +2,18 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
-namespace Booking.System.ReservationService.DTO.Models;
+namespace Booking.System.Gateway.DTO;
 
-public class ReservationDto
+public class CreateReservationDto
 {
+    /// <summary>
+    /// Идентификатор брони.
+    /// </summary>
+    [Required]
+    [DataMember(Name = "userName")]
+    [JsonPropertyName("userName")]
+    public string Username { get; set; }
+    
     /// <summary>
     /// Идентификатор брони.
     /// </summary>
@@ -13,6 +21,14 @@ public class ReservationDto
     [DataMember(Name = "reservationUid")]
     [JsonPropertyName("reservationUid")]
     public Guid ReservationUid { get; set; }
+    
+    /// <summary>
+    /// Идентификатор брони.
+    /// </summary>
+    [Required]
+    [DataMember(Name = "hotelUid")]
+    [JsonPropertyName("hotelUid")]
+    public Guid HotelUid { get; set; }
     
     /// <summary>
     /// Начало бррони.
@@ -29,23 +45,17 @@ public class ReservationDto
     [DataMember(Name = "endDate")]
     [JsonPropertyName("endDate")]
     public DateTime EndDate { get; set; }
-    
-    /// <summary>
-    /// Статус брони.
-    /// </summary>
-    [Required]
-    [DataMember(Name = "status")]
-    [JsonPropertyName("status")]
-    public string Status { get; set; }
 
-    public ReservationDto(Guid reservationUid,
+    public CreateReservationDto(string username,
+        Guid reservationUid,
+        Guid hotelUid,
         DateTime startDate,
-        DateTime endDate,
-        string status)
+        DateTime endDate)
     {
+        Username = username;
         ReservationUid = reservationUid;
+        HotelUid = hotelUid;
         StartDate = startDate;
         EndDate = endDate;
-        Status = status;
     }
 }
