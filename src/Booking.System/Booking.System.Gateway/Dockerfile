@@ -7,7 +7,7 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-COPY ["Booking.System/Booking.System.Gateway.csproj", "Booking.System/Booking.System.Gateway/"]
+COPY ["Booking.System/Booking.System.Gateway/Booking.System.Gateway.csproj", "Booking.System/Booking.System.Gateway/"]
 RUN dotnet restore "./Booking.System/Booking.System.Gateway ./Booking.System/Booking.System.Gateway/Booking.System.Gateway.csproj"
 
 COPY . .
