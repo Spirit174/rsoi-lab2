@@ -7,14 +7,14 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Booking.System/Booking.System.ReservationService/Booking.System.ReservationService.csproj", "Booking.System/Booking.System.ReservationService/"]
-RUN dotnet restore "./Booking.System/Booking.System.ReservationService/./Booking.System/Booking.System.ReservationService.csproj"
+RUN dotnet restore "./Booking.System/Booking.System.ReservationService/./Booking.System/Booking.System.ReservationService/Booking.System.ReservationService.csproj"
 COPY . .
 WORKDIR "/src/Booking.System/Booking.System.ReservationService"
-RUN dotnet build "./Booking.System/Booking.System.ReservationService.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./Booking.System/Booking.System.ReservationService/Booking.System.ReservationService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Booking.System/Booking.System.ReservationService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./Booking.System/Booking.System.ReservationService/Booking.System.ReservationService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
