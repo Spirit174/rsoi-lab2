@@ -1,4 +1,4 @@
-using System.Reflection;
+using Booking.System.ReservationService.DataBase.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace Booking.System.ReservationService.Extensions;
@@ -9,7 +9,7 @@ public static class HostProviderExtensions
     {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-        services.AddDbContext<PersonContext>(options =>
+        services.AddDbContext<ReservationContext>(options =>
         {
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
         });

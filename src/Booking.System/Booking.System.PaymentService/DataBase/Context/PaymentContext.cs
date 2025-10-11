@@ -9,6 +9,25 @@ public class PaymentContext(DbContextOptions<PaymentContext> options) : DbContex
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new PaymentConfiguration());
+        modelBuilder.Entity<DbPayment>(entity =>
+        {
+            entity.ToTable("payments"); 
+
+            entity.Property(p => p.Id)
+                .HasColumnName("id"); 
+            
+            entity.Property(p => p.PaymentUid)
+                .HasColumnName("payment_uid");
+            
+            entity.Property(p => p.PaymentStatus)
+                .HasConversion<string>()
+                .HasDefaultValue("PAID")
+                .HasColumnName("status");
+            
+            entity.Property(p => p.Price)
+                .HasColumnName("price");
+        });
+        
+        base.OnModelCreating(modelBuilder);
     }
 }

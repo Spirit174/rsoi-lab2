@@ -10,6 +10,31 @@ public class LoyaltyContext(DbContextOptions<LoyaltyContext> options) : DbContex
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new LoyaltyConfiguration());
+        modelBuilder.Entity<DbLoyalty>(entity =>
+        {
+            entity.ToTable("loyalties"); 
+        
+            entity.HasIndex(p => p.Username)
+                .IsUnique();
+            
+            entity.Property(p => p.Id)
+                .HasColumnName("id"); 
+            
+            entity.Property(p => p.Username)
+                .HasColumnName("username");
+            
+            entity.Property(p => p.Status)
+                .HasConversion<string>()
+                .HasDefaultValue("BRONZE")
+                .HasColumnName("status");
+            
+            entity.Property(p => p.Discount)
+                .HasColumnName("discount");
+            
+            entity.Property(p => p.ReservationCount)
+                .HasColumnName("reservation_count");
+        });
+        
+        base.OnModelCreating(modelBuilder);
     }
 }

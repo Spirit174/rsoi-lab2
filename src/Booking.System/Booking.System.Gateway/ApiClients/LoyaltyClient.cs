@@ -28,7 +28,7 @@ public class LoyaltyClient : ILoyaltyClient
         RestRequest? request = null;
         try
         {
-            var requestUrl = $"api/v1/{userName}";
+            var requestUrl = $"api/v1/loyalty/{userName}";
 
             request = new RestRequest(requestUrl, Method.Get);
 
@@ -55,7 +55,7 @@ public class LoyaltyClient : ILoyaltyClient
         RestRequest? request = null;
         try
         {
-            var requestUrl = $"api/v1/{userName}";
+            var requestUrl = $"api/v1/loyalty/{userName}";
 
             var requestBody = new IncreaseBool
             {

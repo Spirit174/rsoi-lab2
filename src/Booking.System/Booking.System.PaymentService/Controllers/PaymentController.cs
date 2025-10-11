@@ -40,18 +40,17 @@ public class PaymentController: ControllerBase
         }
     }
     
-    
     /// <summary>
     /// Создать платеж.
     /// </summary>
     [HttpPost("/payment/{price}")]
-    public async Task<ActionResult<Guid>> CreatePayment([FromRoute] int price)
+    public async Task<ActionResult<PaymentIdDto>> CreatePayment([FromRoute] int price)
     {
         try
         {
             var paymentId = await _paymentService.CreatePayment(price);
 
-            return Ok(paymentId);
+            return Ok(new PaymentIdDto(paymentId));
         }
         catch (Exception e)
         {
@@ -62,7 +61,7 @@ public class PaymentController: ControllerBase
     }
     
     /// <summary>
-    /// Получить платеж по айди.
+    /// Получить платеж по идентификатору.
     /// </summary>
     [HttpGet("/payment/{paymentId}")]
     public async Task<ActionResult<PaymentInfoDto>> GetPayment([FromRoute] Guid paymentId)

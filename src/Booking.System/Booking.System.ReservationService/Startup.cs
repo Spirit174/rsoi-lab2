@@ -1,4 +1,8 @@
+using Booking.System.ReservationService.Core.Interfaces;
+using Booking.System.ReservationService.Core.Services;
+using Booking.System.ReservationService.DataBase.Repositories;
 using Microsoft.OpenApi.Models;
+using Booking.System.ReservationService.Extensions;
 
 namespace Booking.System.ReservationService;
 
@@ -23,6 +27,12 @@ public class Startup
         services.AddSwaggerGenNewtonsoftSupport();
         
         services.AddDbContext(Configuration);
+        
+        services.AddScoped<IReservationRepository, ReservationRepository>();
+        services.AddScoped<IHotelRepository, HotelRepository>();
+        
+        services.AddScoped<IReservationService, Core.Services.ReservationService>();
+        services.AddScoped<IHotelService, HotelService>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

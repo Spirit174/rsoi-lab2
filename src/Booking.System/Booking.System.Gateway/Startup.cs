@@ -26,6 +26,7 @@ public class Startup
         services.Configure<ClientsConfiguration>(Configuration.GetSection(nameof(ClientsConfiguration)));
         
         services.AddSingleton<ILoyaltyClient, LoyaltyClient>();
+        services.AddSingleton<IPaymentClient, PaymentClient>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
