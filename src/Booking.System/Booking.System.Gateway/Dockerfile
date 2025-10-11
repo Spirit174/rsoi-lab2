@@ -8,17 +8,17 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 COPY ["Booking.System/Booking.System.Gateway/Booking.System.Gateway.csproj", "Booking.System/Booking.System.Gateway/"]
-RUN dotnet restore "./Booking.System/Booking.System.Gateway ./Booking.System/Booking.System.Gateway/Booking.System.Gateway.csproj"
+RUN dotnet restore "./Booking.System/Booking.System.Gateway/Booking.System.Gateway.csproj"
 
 COPY . .
 WORKDIR "/src/Booking.System/Booking.System.Gateway"
-RUN dotnet build "./Booking.System/Booking.System.Gateway.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "Booking.System.Gateway.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Booking.System/Booking.System.Gateway.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Booking.System.Gateway.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Booking.System/Booking.System.Gateway.dll"]
+ENTRYPOINT ["dotnet", "Booking.System.Gateway.dll"]

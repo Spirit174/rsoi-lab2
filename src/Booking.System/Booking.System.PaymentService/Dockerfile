@@ -7,16 +7,16 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Booking.System/Booking.System.PaymentService/Booking.System.PaymentService.csproj", "Booking.System/Booking.System.PaymentService/"]
-RUN dotnet restore "./Booking.System/Booking.System.PaymentService/./Booking.System.PaymentService.csproj"
+RUN dotnet restore "./Booking.System/Booking.System.PaymentService/Booking.System.PaymentService.csproj"
 COPY . .
 WORKDIR "/src/Booking.System/Booking.System.PaymentService"
-RUN dotnet build "./Booking.System/Booking.System.PaymentService.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "/Booking.System.PaymentService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Booking.System/Booking.System.PaymentService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Booking.System.PaymentService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Booking.System/Booking.System.PaymentService.dll"]
+ENTRYPOINT ["dotnet", "Booking.System.PaymentService.dll"]
