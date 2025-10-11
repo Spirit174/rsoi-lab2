@@ -18,7 +18,7 @@ public class LoyaltyClient : ILoyaltyClient
     {
         _clientsConfiguration = clientsConfiguration.Value;
         _logger = logger;
-        _client = new RestClient("http://loyalty_service:8050/",
+        _client = new RestClient("http://localhost:8050/",
             configureRestClient: c => { c.ThrowOnAnyError = true; },
             configureSerialization: s => { s.UseNewtonsoftJson(); });
     }

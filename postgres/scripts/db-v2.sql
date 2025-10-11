@@ -58,6 +58,6 @@ CREATE TABLE loyalty
     discount          INT         NOT NULL
 );
 
-INSERT INTO public.loyalty(id, username, reservation_count, status, price) VALUES (
+INSERT INTO public.loyalty(id, username, reservation_count, status, discount) VALUES (
     '1', 'Test Max', 25,  'GOLD',  10
 );

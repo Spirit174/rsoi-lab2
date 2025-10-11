@@ -59,7 +59,6 @@ jobs:
       - name: Run API Tests
         uses: matt-ball/newman-action@master
         with:
-          # TODO insert your variant
           collection: v2/postman/collection.json
           environment: v2/postman/environment.json
           delayRequest: 100
@@ -69,7 +68,9 @@ jobs:
         if: always()
         timeout-minutes: 5
         run: |
+          docker ps
           docker compose logs
+          
 
       - uses: education/autograding@v1
         id: autograder
