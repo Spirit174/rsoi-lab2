@@ -8,7 +8,9 @@ public class ReservationConverter
 {
     public static ReservationDto Convert(Reservation reservation)
     {
-        return new ReservationDto(reservation.HotelUid,
+        return new ReservationDto(reservation.ReservationUid,
+            reservation.HotelUid,
+            reservation.PaymentUid,
             reservation.StartDate,
             reservation.EndDate,
             ReservationStatusConverter.Convert(reservation.Status));

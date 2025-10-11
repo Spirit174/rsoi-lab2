@@ -26,7 +26,7 @@ public class LoyaltyService : ILoyaltyService
         {
             _logger.LogDebug("Loyalty not found for user {UserName}. Creating new loyalty record.", userName);
             
-            var newLoyalty = new Loyalty(Guid.NewGuid(), userName, 0, LoyaltyStatus.BRONZE, 5);
+            var newLoyalty = new Loyalty(1, userName, 0, LoyaltyStatus.BRONZE, 5);
             await _loyaltyRepository.CreateLoyaltyAsync(newLoyalty);
             
             _logger.LogInformation("Successfully created new loyalty for user {UserName}. ID: {LoyaltyId}, Status: {Status}", 

@@ -4,7 +4,7 @@ namespace Booking.System.LoyaltyService.Core.Models;
 
 public class Loyalty
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     
     public string Username { get; set; }
     
@@ -14,7 +14,7 @@ public class Loyalty
     
     public int Discount { get; set; }
 
-    public Loyalty(Guid id,
+    public Loyalty(int id,
         string username,
         int reservationCount,
         LoyaltyStatus status,

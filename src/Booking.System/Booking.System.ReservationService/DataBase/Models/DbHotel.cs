@@ -1,8 +1,11 @@
-﻿namespace Booking.System.ReservationService.DataBase.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Booking.System.ReservationService.DataBase.Models;
 
 public class DbHotel
 {
-    public Guid Id { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
     
     public Guid HotelUid { get; set; }
     
@@ -20,7 +23,7 @@ public class DbHotel
     
     public virtual ICollection<DbReservation> Reservations { get; set; } = new List<DbReservation>();
 
-    public DbHotel(Guid id,
+    public DbHotel(int id,
         Guid hotelUid,
         string name,
         string country,

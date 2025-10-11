@@ -1,10 +1,12 @@
-﻿using Booking.System.PaymentService.DataBase.Models.Enums;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Booking.System.PaymentService.DataBase.Models.Enums;
 
 namespace Booking.System.PaymentService.DataBase.Models;
 
 public class DbPayment
 {
-    public Guid Id { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
     
     public Guid PaymentUid { get; set; }
     
@@ -12,7 +14,7 @@ public class DbPayment
     
     public int Price { get; set; }
 
-    public DbPayment(Guid id,
+    public DbPayment(int id,
         Guid paymentUid,
         DbPaymentStatus paymentStatus,
         int price)

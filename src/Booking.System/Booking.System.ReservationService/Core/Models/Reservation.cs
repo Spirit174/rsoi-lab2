@@ -4,7 +4,7 @@ namespace Booking.System.ReservationService.Core.Models;
 
 public class Reservation
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     
     public Guid ReservationUid { get; set; }
     
@@ -20,7 +20,7 @@ public class Reservation
     
     public DateTime EndDate { get; set; }
 
-    public Reservation(Guid id,
+    public Reservation(int id,
         Guid reservationUid,
         string username,
         Guid paymentUid,

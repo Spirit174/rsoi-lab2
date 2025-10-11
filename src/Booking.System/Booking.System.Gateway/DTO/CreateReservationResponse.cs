@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection.Metadata;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
 namespace Booking.System.Gateway.DTO;
 
-public class ReservationDto
+public class CreateReservationResponse
 {
     /// <summary>
     /// Идентификатор брони.
@@ -23,14 +24,6 @@ public class ReservationDto
     public Guid HotelUid { get; set; }
     
     /// <summary>
-    /// Идентификатор платежа.
-    /// </summary>
-    [Required]
-    [DataMember(Name = "paymentUid")]
-    [JsonPropertyName("paymentUid")]
-    public Guid PaymentUid { get; set; }
-    
-    /// <summary>
     /// Начало бррони.
     /// </summary>
     [Required]
@@ -47,27 +40,41 @@ public class ReservationDto
     public DateTime EndDate { get; set; }
     
     /// <summary>
-    /// Статус брони.
+    /// Скидка.
+    /// </summary>
+    [Required]
+    [DataMember(Name = "discount")]
+    [JsonPropertyName("discount")]
+    public int Discount { get; set; }
+    
+    // <summary>
+    /// Статус.
     /// </summary>
     [Required]
     [DataMember(Name = "status")]
     [JsonPropertyName("status")]
     public string Status { get; set; }
     
+    // <summary>
+    /// Платеж.
+    /// </summary>
+    [Required]
+    [DataMember(Name = "payment")]
+    [JsonPropertyName("payment")]
+    public PaymentInfoDto PaymentInfo { get; set; }
 
-    public ReservationDto(Guid reservationUid,
-        Guid hotelUid,
-        Guid paymentUid,
+    public CreateReservationResponse(Guid hotelUid,
         DateTime startDate,
         DateTime endDate,
-        string status)
+        int discount,
+        string status,
+        PaymentInfoDto paymentInfo)
     {
-        ReservationUid = reservationUid;
         HotelUid = hotelUid;
-        PaymentUid = paymentUid;
         StartDate = startDate;
         EndDate = endDate;
+        Discount = discount;
         Status = status;
+        PaymentInfo = paymentInfo;
     }
 }
-

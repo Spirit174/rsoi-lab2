@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using Booking.System.Gateway.ApiClients;
 using Booking.System.Gateway.DTO;
+using Booking.System.Gateway.Exceptions;
 using Booking.System.LoyaltyService.DTO.Models;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -58,26 +59,50 @@ public class BookingController: ControllerBase
     /// Получить информацию о пользователе.
     /// </summary>
     /// <response code="200">Информация о пользователе успешно получена.</response>
-    /// <response code="400">Отсутствует заголовок.</response>
-    /// <response code="404">Пользователь не найден.</response>
     /// <response code="500">Ошибка на стороне сервера.</response>
     [HttpGet("/me")]
     [SwaggerOperation("Метод для получения информации о пользователе.", "Метод для получения информации о пользователе.")]
     [SwaggerResponse(statusCode: 200, description: "Информация о пользователе успешно получена.")]
-    [SwaggerResponse(statusCode: 400, type: typeof(ErrorResponse), description: "Отсутствует заголовок.")]
-    [SwaggerResponse(statusCode: 404, type: typeof(ErrorResponse), description: "Пользователь не найден.")]
     [SwaggerResponse(statusCode: 500, type: typeof(ErrorResponse), description: "Ошибка на стороне сервера.")]
     public async Task<ActionResult<UserInfoDto>> GetUserInfo()
     {
-        var username = Request.Headers["X-User-Name"].FirstOrDefault();
+        try
+        {
+            var username = Request.Headers["X-User-Name"].FirstOrDefault();
         
-        if (string.IsNullOrEmpty(username))
-            return BadRequest("X-User-Name header is required");
+            if (string.IsNullOrEmpty(username))
+                return BadRequest("X-User-Name header is required");
         
-        var loyaltyInfo = await _loyaltyClient.GetLoyaltyAsync(username);
+            var reservations = await _reservationClient.GetReservationByUsername(username);
+            var loyalty = await _loyaltyClient.GetLoyaltyAsync(username);
         
-        var userInfo = await _userService.GetUserInfoAsync(username);
-        return Ok(userInfo);
+            var list = new List<ReservationDtoWithHotelAndPayment>();
+
+            foreach (var reservation in reservations)
+            {
+                var hotel = await _reservationClient.GetHotelByIdAsync(reservation.HotelUid);
+
+                var fullAddress = hotel.Country + ", " + hotel.City + ", " + hotel.Address;
+
+                var payment = await _paymentClient.GetPaymentAsync(reservation.PaymentUid);
+            
+                var hotelDtoWithFullAddress = new HotelDtoWithFullAddress(hotel.HotelUid, hotel.Name, fullAddress, hotel.Stars);
+                var reser = new ReservationDtoWithHotelAndPayment(reservation.ReservationUid, hotelDtoWithFullAddress,
+                    reservation.StartDate, reservation.EndDate, reservation.Status, payment);
+            
+                list.Add(reser);
+            }
+        
+            var userInfo = new UserInfoDto(list, loyalty);
+
+            return Ok(userInfo);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Unexpected exception while processing request in reservation service");
+
+            return StatusCode(500, new ErrorResponse("Неожиданная ошибка на стороне сервера."));
+        }
     }
     
     /// <summary>
@@ -91,14 +116,42 @@ public class BookingController: ControllerBase
     [SwaggerResponse(statusCode: 200, description: "Список бронирований успешно получен.")]
     [SwaggerResponse(statusCode: 400, type: typeof(ErrorResponse), description: "Отсутствует заголовок.")]
     [SwaggerResponse(statusCode: 500, type: typeof(ErrorResponse), description: "Ошибка на стороне сервера.")]
-    public async Task<ActionResult<List<ReservationDto>>> GetUserReservations()
+    public async Task<ActionResult<List<ReservationDtoWithHotelAndPayment>>> GetUserReservations()
     {
-        var username = Request.Headers["X-User-Name"].FirstOrDefault();
-        if (string.IsNullOrEmpty(username))
-            return BadRequest("X-User-Name header is required");
+        try
+        {
+            var username = Request.Headers["X-User-Name"].FirstOrDefault();
+        
+            if (string.IsNullOrEmpty(username))
+                return BadRequest("X-User-Name header is required");
+            
+            var reservations = await _reservationClient.GetReservationByUsername(username);
+        
+            var list = new List<ReservationDtoWithHotelAndPayment>();
 
-        var reservations = await _reservationService.GetUserReservationsAsync(username);
-        return Ok(reservations);
+            foreach (var reservation in reservations)
+            {
+                var hotel = await _reservationClient.GetHotelByIdAsync(reservation.HotelUid);
+
+                var fullAddress = hotel.Country + ", " + hotel.City + ", " + hotel.Address;
+
+                var payment = await _paymentClient.GetPaymentAsync(reservation.PaymentUid);
+            
+                var hotelDtoWithFullAddress = new HotelDtoWithFullAddress(hotel.HotelUid, hotel.Name, fullAddress, hotel.Stars);
+                var reser = new ReservationDtoWithHotelAndPayment(reservation.ReservationUid, hotelDtoWithFullAddress,
+                    reservation.StartDate, reservation.EndDate, reservation.Status, payment);
+            
+                list.Add(reser);
+            }
+            
+            return Ok(list);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Unexpected exception while processing request in reservation service");
+
+            return StatusCode(500, new ErrorResponse("Неожиданная ошибка на стороне сервера."));
+        }
     }
 
     /// <summary>
@@ -115,17 +168,60 @@ public class BookingController: ControllerBase
     [SwaggerResponse(statusCode: 400, type: typeof(ErrorResponse), description: "Отсутствует заголовок.")]
     [SwaggerResponse(statusCode: 404, type: typeof(ErrorResponse), description: "Бронирование не найдено.")]
     [SwaggerResponse(statusCode: 500, type: typeof(ErrorResponse), description: "Ошибка на стороне сервера.")]
-    public async Task<ActionResult<ReservationDto>> GetReservation([FromRoute] Guid reservationUid)
+    public async Task<ActionResult<ReservationDtoWithHotelAndPayment>> GetReservation([FromRoute] Guid reservationUid)
     {
-        var username = Request.Headers["X-User-Name"].FirstOrDefault();
-        if (string.IsNullOrEmpty(username))
-            return BadRequest("X-User-Name header is required");
+        try
+        {
+            var username = Request.Headers["X-User-Name"].FirstOrDefault();
+        
+            if (string.IsNullOrEmpty(username))
+                return BadRequest("X-User-Name header is required");
+            
+            var reservations = await _reservationClient.GetReservationByUsername(username);
+            ReservationDtoWithHotelAndPayment? res = null;
+            
+            foreach (var reservation in reservations)
+            {
+                if (reservation.ReservationUid == reservationUid)
+                {
+                    var hotel = await _reservationClient.GetHotelByIdAsync(reservation.HotelUid);
 
-        var reservation = await _reservationService.GetReservationAsync(reservationUid, username);
-        if (reservation == null)
-            return NotFound();
+                    var fullAddress = hotel.Country + ", " + hotel.City + ", " + hotel.Address;
 
-        return Ok(reservation);
+                    var payment = await _paymentClient.GetPaymentAsync(reservation.PaymentUid);
+
+                    var hotelDtoWithFullAddress =
+                        new HotelDtoWithFullAddress(hotel.HotelUid, hotel.Name, fullAddress, hotel.Stars);
+                    res = new ReservationDtoWithHotelAndPayment(reservation.ReservationUid, hotelDtoWithFullAddress,
+                        reservation.StartDate, reservation.EndDate, reservation.Status, payment);
+                }
+            }
+            return Ok(res);
+        }
+        catch (HotelNotFoundException e)
+        {
+            _logger.LogError(e, "Unexpected exception while processing request in reservation service");
+
+            return StatusCode(404, e.Message);
+        }
+        catch (PaymentNotFoundException e)
+        {
+            _logger.LogError(e, "Unexpected exception while processing request in reservation service");
+
+            return StatusCode(404, e.Message);
+        }
+        catch (ReservationNotFoundException e)
+        {
+            _logger.LogError(e, "Unexpected exception while processing request in reservation service");
+
+            return StatusCode(404, e.Message);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Unexpected exception while processing request in reservation service");
+
+            return StatusCode(500, new ErrorResponse("Неожиданная ошибка на стороне сервера."));
+        }
     }
     
     /// <summary>
@@ -135,36 +231,62 @@ public class BookingController: ControllerBase
     /// <response code="201">Бронирование успешно создано.</response>
     /// <response code="400">Отсутствует заголовок или невалидные данные запроса.</response>
     /// <response code="404">Отель не найден.</response>
-    /// <response code="409">Конфликт при создании бронирования.</response>
     /// <response code="500">Ошибка на стороне сервера.</response>
     [HttpPost("/reservations")]
     [SwaggerOperation("Метод для бронирования отеля.", "Метод для бронирования отеля.")]
     [SwaggerResponse(statusCode: 201, description: "Бронирование успешно создано.")]
     [SwaggerResponse(statusCode: 400, type: typeof(ErrorResponse), description: "Отсутствует заголовок или невалидные данные запроса.")]
     [SwaggerResponse(statusCode: 500, type: typeof(ErrorResponse), description: "Ошибка на стороне сервера.")]
-    public async Task<ActionResult<ReservationDto>> CreateReservation([FromBody] CreateReservationRequest request)
+    public async Task<ActionResult<CreateReservationResponse>> CreateReservation([FromBody] CreateReservationRequest request)
     {
-        var username = Request.Headers["X-User-Name"].FirstOrDefault();
-        if (string.IsNullOrEmpty(username))
-            return BadRequest("X-User-Name header is required");
-
         try
         {
-            var loyaltyInfo = await _loyaltyClient.GetLoyaltyAsync(username);
+            var username = Request.Headers["X-User-Name"].FirstOrDefault();
+        
+            if (string.IsNullOrEmpty(username))
+                return BadRequest("X-User-Name header is required");
+
+            var reservationUid = Guid.NewGuid();
             
-            var reservation = await _reservationService.CreateReservationAsync(username, request);
+            var hotel = await _reservationClient.GetHotelByIdAsync(request.HotelUid);
             
+            var difference = request.EndDate - request.StartDate;
+            var countDays = difference.Days;
+            var loyalty = await _loyaltyClient.GetLoyaltyAsync(username);
+            var price = countDays * hotel.Price * (1 - loyalty.Discount);
+            
+            var paymentUid = await _paymentClient.CreatePaymentAsync(price);
+            var payment = await _paymentClient.GetPaymentAsync(paymentUid);
+            
+            await _reservationClient.CreateReservation(new CreateReservationDto(username, paymentUid, request.HotelUid, request.StartDate, request.EndDate));
             await _loyaltyClient.UpdateLoyaltyReservationCountAsync(username, true);
+
+            var reservationResponse = new CreateReservationResponse(request.HotelUid, request.StartDate, request.EndDate,
+                loyalty.Discount, payment.Status, payment);
             
-            return CreatedAtAction(nameof(GetReservation), new { reservationUid = reservation.ReservationUid }, reservation);
+            return StatusCode(201, reservationResponse);
         }
-        catch ( ex)
+        catch (HotelNotFoundException e)
         {
-            return BadRequest(ex.Message);
+            _logger.LogError(e, "Unexpected exception while processing request in reservation service");
+
+            return StatusCode(400, e.Message);
+        }
+        catch (PaymentNotFoundException e)
+        {
+            _logger.LogError(e, "Unexpected exception while processing request in reservation service");
+
+            return StatusCode(400, e.Message);
+        }
+        catch (ReservationNotFoundException e)
+        {
+            _logger.LogError(e, "Unexpected exception while processing request in reservation service");
+
+            return StatusCode(400, e.Message);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Unexpected exception while processing request in loyalty service");
+            _logger.LogError(e, "Unexpected exception while processing request in reservation service");
 
             return StatusCode(500, new ErrorResponse("Неожиданная ошибка на стороне сервера."));
         }
@@ -186,17 +308,44 @@ public class BookingController: ControllerBase
     [SwaggerResponse(statusCode: 500, type: typeof(ErrorResponse), description: "Ошибка на стороне сервера.")]
     public async Task<IActionResult> CancelReservation(Guid reservationUid)
     {
-        var username = Request.Headers["X-User-Name"].FirstOrDefault();
-        if (string.IsNullOrEmpty(username))
-            return BadRequest("X-User-Name header is required");
-
-        var success = await _reservationService.CancelReservationAsync(reservationUid, username);
-        if (!success)
-            return NotFound();
+        try
+        {
+            var username = Request.Headers["X-User-Name"].FirstOrDefault();
         
-        await _loyaltyClient.UpdateLoyaltyReservationCountAsync(username, false);
+            if (string.IsNullOrEmpty(username))
+                return BadRequest("X-User-Name header is required");
 
-        return NoContent();
+            await _reservationClient.CancelReservation(reservationUid); 
+            var reserver = await _reservationClient.GetReservationById(reservationUid);
+            await _paymentClient.UpdatePaymentAsync(reserver.PaymentUid);
+            await _loyaltyClient.UpdateLoyaltyReservationCountAsync(username, false);
+            
+            return StatusCode(204);
+        }
+        catch (HotelNotFoundException e)
+        {
+            _logger.LogError(e, "Unexpected exception while processing request in reservation service");
+
+            return StatusCode(400, e.Message);
+        }
+        catch (PaymentNotFoundException e)
+        {
+            _logger.LogError(e, "Unexpected exception while processing request in reservation service");
+
+            return StatusCode(400, e.Message);
+        }
+        catch (ReservationNotFoundException e)
+        {
+            _logger.LogError(e, "Unexpected exception while processing request in reservation service");
+
+            return StatusCode(400, e.Message);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Unexpected exception while processing request in reservation service");
+
+            return StatusCode(500, new ErrorResponse("Неожиданная ошибка на стороне сервера."));
+        }
     }
     
     /// <summary>

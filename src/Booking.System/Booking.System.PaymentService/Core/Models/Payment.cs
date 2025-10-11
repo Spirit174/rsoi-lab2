@@ -4,7 +4,7 @@ namespace Booking.System.PaymentService.Core.Models;
 
 public class Payment
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     
     public Guid PaymentUid { get; set; }
     
@@ -12,7 +12,7 @@ public class Payment
     
     public int Price { get; set; }
 
-    public Payment(Guid id,
+    public Payment(int id,
         Guid paymentUid,
         PaymentStatus paymentStatus,
         int price)

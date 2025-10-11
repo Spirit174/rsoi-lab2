@@ -71,7 +71,7 @@ public class ReservationController: ControllerBase
     {
         try
         {
-            await _reservationService.CreateReservationAsync(createReservationDto.Username, createReservationDto.ReservationUid,
+            await _reservationService.CreateReservationAsync(createReservationDto.Username, createReservationDto.PaymentUid,
                 createReservationDto.HotelUid, createReservationDto.StartDate, createReservationDto.EndDate);
 
             return Ok();
@@ -88,7 +88,7 @@ public class ReservationController: ControllerBase
     /// Получить все брони пользователя.
     /// </summary>
     [HttpGet("/reservations/user/{userName}")]
-    public async Task<ActionResult<List<ReservationDto>>> CreateReservation([FromRoute] string userName)
+    public async Task<ActionResult<List<ReservationDto>>> GetReservationsById([FromRoute] string userName)
     {
         try
         {

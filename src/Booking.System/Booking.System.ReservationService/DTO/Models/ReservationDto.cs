@@ -15,6 +15,22 @@ public class ReservationDto
     public Guid ReservationUid { get; set; }
     
     /// <summary>
+    /// Идентификатор брони.
+    /// </summary>
+    [Required]
+    [DataMember(Name = "hotelUid")]
+    [JsonPropertyName("hotelUid")]
+    public Guid HotelUid { get; set; }
+    
+    /// <summary>
+    /// Идентификатор платежа.
+    /// </summary>
+    [Required]
+    [DataMember(Name = "paymentUid")]
+    [JsonPropertyName("paymentUid")]
+    public Guid PaymentUid { get; set; }
+    
+    /// <summary>
     /// Начало бррони.
     /// </summary>
     [Required]
@@ -37,13 +53,18 @@ public class ReservationDto
     [DataMember(Name = "status")]
     [JsonPropertyName("status")]
     public string Status { get; set; }
+    
 
     public ReservationDto(Guid reservationUid,
+        Guid hotelUid,
+        Guid paymentUid,
         DateTime startDate,
         DateTime endDate,
         string status)
     {
         ReservationUid = reservationUid;
+        HotelUid = hotelUid;
+        PaymentUid = paymentUid;
         StartDate = startDate;
         EndDate = endDate;
         Status = status;

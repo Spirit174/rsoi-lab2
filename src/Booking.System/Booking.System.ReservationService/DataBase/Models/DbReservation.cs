@@ -6,7 +6,8 @@ namespace Booking.System.ReservationService.DataBase.Models;
 
 public class DbReservation
 {
-    public Guid Id { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
     
     public Guid ReservationUid { get; set; }
     
@@ -25,7 +26,7 @@ public class DbReservation
     [ForeignKey("HotelId")]
     public virtual DbHotel Hotel { get; set; } = null!;
 
-    public DbReservation(Guid id,
+    public DbReservation(int id,
         Guid reservationUid,
         string username,
         Guid paymentUid,

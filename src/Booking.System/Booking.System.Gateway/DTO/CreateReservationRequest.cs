@@ -1,29 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
 namespace Booking.System.Gateway.DTO;
 
-public class CreateReservationDto
+public class CreateReservationRequest
 {
     /// <summary>
-    /// Идентификатор брони.
-    /// </summary>
-    [Required]
-    [DataMember(Name = "userName")]
-    [JsonPropertyName("userName")]
-    public string Username { get; set; }
-    
-    /// <summary>
-    /// Идентификатор платежа.
-    /// </summary>
-    [Required]
-    [DataMember(Name = "paymentUid")]
-    [JsonPropertyName("paymentUid")]
-    public Guid ReservationUid { get; set; }
-    
-    /// <summary>
-    /// Идентификатор брони.
+    /// Идентификатор отеля.
     /// </summary>
     [Required]
     [DataMember(Name = "hotelUid")]
@@ -39,21 +23,17 @@ public class CreateReservationDto
     public DateTime StartDate { get; set; }
     
     /// <summary>
-    /// Конец бррони.
+    /// Конец брони.
     /// </summary>
     [Required]
     [DataMember(Name = "endDate")]
     [JsonPropertyName("endDate")]
     public DateTime EndDate { get; set; }
 
-    public CreateReservationDto(string username,
-        Guid paymentId,
-        Guid hotelUid,
+    public CreateReservationRequest(Guid hotelUid,
         DateTime startDate,
         DateTime endDate)
     {
-        Username = username;
-        ReservationUid = paymentId;
         HotelUid = hotelUid;
         StartDate = startDate;
         EndDate = endDate;

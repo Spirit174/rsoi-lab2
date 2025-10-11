@@ -22,7 +22,7 @@ public class PaymentService: IPaymentService
         _logger.LogDebug("Creating payment with price: {Price}", price);
         
         var paymentId = Guid.NewGuid();
-        var payment = new Payment(Guid.NewGuid(), paymentId, PaymentStatus.PAID, price);
+        var payment = new Payment(1, paymentId, PaymentStatus.PAID, price);
         
         await _paymentRepository.CreatePaymentAsync(payment);
         _logger.LogInformation("Created payment with price: {Price} and {PaymentId}", price, paymentId);

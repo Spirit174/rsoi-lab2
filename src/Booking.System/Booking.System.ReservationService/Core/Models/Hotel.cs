@@ -2,7 +2,7 @@
 
 public class Hotel
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     
     public Guid HotelUid { get; set; }
     
@@ -18,7 +18,7 @@ public class Hotel
     
     public int Price { get; set; }
     
-    public Hotel(Guid id,
+    public Hotel(int id,
         Guid hotelUid,
         string name,
         string country,
