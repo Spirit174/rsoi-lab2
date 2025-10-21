@@ -8,7 +8,7 @@ CREATE DATABASE loyalties;
 GRANT ALL PRIVILEGES ON DATABASE loyalties TO program;
 
 \c reservations;
-CREATE TABLE hotels
+CREATE TABLE hotel
 (
     id        SERIAL PRIMARY KEY,
     hotel_uid uuid         NOT NULL UNIQUE,
@@ -27,14 +27,14 @@ CREATE TABLE reservation
     reservation_uid uuid UNIQUE NOT NULL,
     username        VARCHAR(80) NOT NULL,
     payment_uid     uuid        NOT NULL,
-    hotel_id        INT REFERENCES hotels (id),
+    hotel_id        INT REFERENCES hotel (id),
     status          VARCHAR(20) NOT NULL
         CHECK (status IN ('PAID', 'CANCELED')),
     start_date      TIMESTAMP WITH TIME ZONE,
-    end_data        TIMESTAMP WITH TIME ZONE
+    end_date        TIMESTAMP WITH TIME ZONE
 );
 
-INSERT INTO public.hotels(id, hotel_uid, name, country, city, address, stars, price) VALUES (
+INSERT INTO public.hotel(id, hotel_uid, name, country, city, address, stars, price) VALUES (
     '1', '049161bb-badd-4fa8-9d90-87c9a82b0668', 'Ararat Park Hyatt Moscow', 'Россия', 'Москва', 'Неглинная ул., 4', 5, 10000
 );
 

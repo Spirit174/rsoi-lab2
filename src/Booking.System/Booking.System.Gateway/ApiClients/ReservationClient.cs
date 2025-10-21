@@ -19,7 +19,7 @@ public class ReservationClient: IReservationClient
     {
         _clientsConfiguration = clientsConfiguration.Value;
         _logger = logger;
-        _client = new RestClient("http://0.0.0.0:8070/",
+        _client = new RestClient("http://reservation_service:8070/",
             configureRestClient: c => { c.ThrowOnAnyError = true; },
             configureSerialization: s => { s.UseNewtonsoftJson(); });
     }

@@ -20,7 +20,7 @@ public class PaymentClient: IPaymentClient
     {
         _clientsConfiguration = clientsConfiguration.Value;
         _logger = logger;
-        _client = new RestClient("http://0.0.0.0:8060/",
+        _client = new RestClient("http://payment_service:8060/",
             configureRestClient: c => { c.ThrowOnAnyError = true; },
             configureSerialization: s => { s.UseNewtonsoftJson(); });
     }
