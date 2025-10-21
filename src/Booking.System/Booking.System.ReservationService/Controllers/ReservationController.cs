@@ -74,10 +74,10 @@ public class ReservationController: ControllerBase
         _logger.LogInformation($"CreateReservation: {createReservationDto}");
         try
         {
-            await _reservationService.CreateReservationAsync(createReservationDto.Username, createReservationDto.PaymentUid,
+            var reservation = await _reservationService.CreateReservationAsync(createReservationDto.Username, createReservationDto.PaymentUid,
                 createReservationDto.HotelUid, createReservationDto.StartDate, createReservationDto.EndDate);
 
-            return Ok();
+            return Ok(reservation);
         }
         catch (Exception e)
         {

@@ -19,24 +19,11 @@ public class ReservationClient: IReservationClient
     {
         _clientsConfiguration = clientsConfiguration.Value;
         _logger = logger;
-        try
-        {
-            _client = new RestClient("http://reservation_service:8070/",
-                configureRestClient: c => { 
-                    c.ThrowOnAnyError = true;
-                    c.MaxTimeout = 30000; // 30 seconds
-                },
-                configureSerialization: s => { s.UseNewtonsoftJson(); });
-                
-            _logger.LogInformation("✅ ReservationClient initialized successfully");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "❌ Failed to initialize ReservationClient");
-            throw;
-        }
+        _client = new RestClient("http://reservation_service:8070/",
+            configureRestClient: c => { c.ThrowOnAnyError = true; },
+            configureSerialization: s => { s.UseNewtonsoftJson(); });
     }
-    
+
     public async Task<HotelPagesDto> GetHotelsPageAsync(int page, int size)
     {
         RestRequest? request = null;

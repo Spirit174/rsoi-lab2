@@ -18,8 +18,8 @@ public class CreateReservationDto
     /// Идентификатор платежа.
     /// </summary>
     [Required]
-    [DataMember(Name = "paymentUid")]
-    [JsonPropertyName("paymentUid")]
+    [DataMember(Name = "reservationUid")]
+    [JsonPropertyName("reservationUid")]
     public Guid ReservationUid { get; set; }
     
     /// <summary>
@@ -47,13 +47,13 @@ public class CreateReservationDto
     public DateTime EndDate { get; set; }
 
     public CreateReservationDto(string username,
-        Guid paymentId,
+        Guid reservationUid,
         Guid hotelUid,
         DateTime startDate,
         DateTime endDate)
     {
         Username = username;
-        ReservationUid = paymentId;
+        ReservationUid = reservationUid;
         HotelUid = hotelUid;
         StartDate = startDate;
         EndDate = endDate;

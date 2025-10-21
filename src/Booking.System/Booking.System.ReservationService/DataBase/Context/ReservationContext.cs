@@ -1,4 +1,5 @@
 ﻿using Booking.System.ReservationService.DataBase.Models;
+using Booking.System.ReservationService.DataBase.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Booking.System.ReservationService.DataBase.Context;
@@ -60,7 +61,7 @@ public class ReservationContext(DbContextOptions<ReservationContext> options) : 
             
             entity.Property(p => p.Status)
                 .HasConversion<string>()
-                .HasDefaultValue("PAID")
+                .HasDefaultValue(DbPaymentStatus.PAID)
                 .HasColumnName("status");
             
             entity.Property(pp => pp.StartDate)

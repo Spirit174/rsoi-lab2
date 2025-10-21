@@ -63,13 +63,15 @@ public class CreateReservationResponse
     [JsonPropertyName("payment")]
     public PaymentInfoDto PaymentInfo { get; set; }
 
-    public CreateReservationResponse(Guid hotelUid,
+    public CreateReservationResponse(Guid reservationUid,
+        Guid hotelUid,
         DateTime startDate,
         DateTime endDate,
         int discount,
         string status,
         PaymentInfoDto paymentInfo)
     {
+        ReservationUid = reservationUid;
         HotelUid = hotelUid;
         StartDate = startDate;
         EndDate = endDate;

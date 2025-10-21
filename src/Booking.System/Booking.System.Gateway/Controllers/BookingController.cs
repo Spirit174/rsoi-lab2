@@ -261,7 +261,7 @@ public class BookingController: ControllerBase
             await _reservationClient.CreateReservation(new CreateReservationDto(username, paymentUid, request.HotelUid, request.StartDate, request.EndDate));
             await _loyaltyClient.UpdateLoyaltyReservationCountAsync(username, true);
 
-            var reservationResponse = new CreateReservationResponse(request.HotelUid, request.StartDate, request.EndDate,
+            var reservationResponse = new CreateReservationResponse(reservationUid, request.HotelUid, request.StartDate, request.EndDate,
                 loyalty.Discount, payment.Status, payment);
             
             return StatusCode(201, reservationResponse);

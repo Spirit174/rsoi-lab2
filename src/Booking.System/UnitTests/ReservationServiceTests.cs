@@ -125,7 +125,7 @@ public class ReservationServiceTests
                 createReservationDto.HotelUid,
                 createReservationDto.StartDate,
                 createReservationDto.EndDate))
-            .Returns(Task.CompletedTask);
+            .Returns((Task<Reservation>)Task.CompletedTask);
 
         // Act
         var result = await _reservationController.CreateReservation(createReservationDto);
