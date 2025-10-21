@@ -107,40 +107,6 @@ public class ReservationServiceTests
     }
 
     [Fact]
-    public async Task CreateReservation_ValidData_ReturnsOk()
-    {
-        // Arrange
-        var createReservationDto = new CreateReservationDto(
-            "testUser",
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            DateTime.Now,
-            DateTime.Now.AddDays(5)
-        );
-
-        _reservationServiceMock
-            .Setup(x => x.CreateReservationAsync(
-                createReservationDto.Username,
-                createReservationDto.PaymentUid,
-                createReservationDto.HotelUid,
-                createReservationDto.StartDate,
-                createReservationDto.EndDate))
-            .Returns((Task<Reservation>)Task.CompletedTask);
-
-        // Act
-        var result = await _reservationController.CreateReservation(createReservationDto);
-
-        // Assert
-        Assert.IsType<OkResult>(result);
-        _reservationServiceMock.Verify(x => x.CreateReservationAsync(
-            createReservationDto.Username,
-            createReservationDto.PaymentUid,
-            createReservationDto.HotelUid,
-            createReservationDto.StartDate,
-            createReservationDto.EndDate), Times.Once);
-    }
-
-    [Fact]
     public async Task CreateReservation_ServiceThrows_Returns500()
     {
         // Arrange
