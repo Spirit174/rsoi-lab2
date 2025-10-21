@@ -35,7 +35,7 @@ public class BookingController: ControllerBase
     /// <param name="size">Размер страницы.</param>
     /// <response code="200">Список отелей успешно получен.</response>
     /// <response code="500">Ошибка на стороне сервера.</response>
-    [HttpGet("/hotels")]
+    [HttpGet("hotels")]
     [SwaggerOperation("Метод для получения списка отелей.", "Метод для получения списка отелей.")]
     [SwaggerResponse(statusCode: 200, description: "Список отелей успешно получен.")]
     [SwaggerResponse(statusCode: 500, type: typeof(ErrorResponse), description: "Ошибка на стороне сервера.")]
@@ -60,7 +60,7 @@ public class BookingController: ControllerBase
     /// </summary>
     /// <response code="200">Информация о пользователе успешно получена.</response>
     /// <response code="500">Ошибка на стороне сервера.</response>
-    [HttpGet("/me")]
+    [HttpGet("me")]
     [SwaggerOperation("Метод для получения информации о пользователе.", "Метод для получения информации о пользователе.")]
     [SwaggerResponse(statusCode: 200, description: "Информация о пользователе успешно получена.")]
     [SwaggerResponse(statusCode: 500, type: typeof(ErrorResponse), description: "Ошибка на стороне сервера.")]
@@ -111,7 +111,7 @@ public class BookingController: ControllerBase
     /// <response code="200">Список бронирований успешно получен.</response>
     /// <response code="400">Отсутствует заголовок.</response>
     /// <response code="500">Ошибка на стороне сервера.</response>
-    [HttpGet("/reservations")]
+    [HttpGet("reservations")]
     [SwaggerOperation("Метод для получения информации о всех бронированиях пользователя.", "Метод для получения информации о всех бронированиях пользователя.")]
     [SwaggerResponse(statusCode: 200, description: "Список бронирований успешно получен.")]
     [SwaggerResponse(statusCode: 400, type: typeof(ErrorResponse), description: "Отсутствует заголовок.")]
@@ -162,7 +162,7 @@ public class BookingController: ControllerBase
     /// <response code="400">Отсутствует заголовок.</response>
     /// <response code="404">Бронирование не найдено.</response>
     /// <response code="500">Ошибка на стороне сервера.</response>
-    [HttpGet("/reservations/{reservationUid}")]
+    [HttpGet("reservations/{reservationUid}")]
     [SwaggerOperation("Метод для получения информации о конкретном бронирование пользователя.", "Метод для получения информации о конкретном бронирование пользователя.")]
     [SwaggerResponse(statusCode: 200, description: "Информация о бронировании успешно получена.")]
     [SwaggerResponse(statusCode: 400, type: typeof(ErrorResponse), description: "Отсутствует заголовок.")]
@@ -232,7 +232,7 @@ public class BookingController: ControllerBase
     /// <response code="400">Отсутствует заголовок или невалидные данные запроса.</response>
     /// <response code="404">Отель не найден.</response>
     /// <response code="500">Ошибка на стороне сервера.</response>
-    [HttpPost("/reservations")]
+    [HttpPost("reservations")]
     [SwaggerOperation("Метод для бронирования отеля.", "Метод для бронирования отеля.")]
     [SwaggerResponse(statusCode: 201, description: "Бронирование успешно создано.")]
     [SwaggerResponse(statusCode: 400, type: typeof(ErrorResponse), description: "Отсутствует заголовок или невалидные данные запроса.")]
@@ -300,7 +300,7 @@ public class BookingController: ControllerBase
     /// <response code="400">Отсутствует заголовок.</response>
     /// <response code="404">Бронирование не найдено.</response>
     /// <response code="500">Ошибка на стороне сервера.</response>
-    [HttpDelete("/reservations/{reservationUid}")]
+    [HttpDelete("reservations/{reservationUid}")]
     [SwaggerOperation("Метод для отмены бронирования отеля.", "Метод для отмены бронирования отеля.")]
     [SwaggerResponse(statusCode: 204, description: "Бронирование успешно отменено.")]
     [SwaggerResponse(statusCode: 400, type: typeof(ErrorResponse), description: "Отсутствует заголовок.")]
@@ -355,7 +355,7 @@ public class BookingController: ControllerBase
     /// <response code="400">Отсутствует заголовок.</response>
     /// <response code="404">Информация о программе лояльности не найдена.</response>
     /// <response code="500">Ошибка на стороне сервера.</response>
-    [HttpGet("/loyalty")]
+    [HttpGet("loyalty")]
     [SwaggerOperation("Метод для получения статуса лояльности.", "Метод для получения статуса лояльности.")]
     [SwaggerResponse(statusCode: 200, description: "Статус лояльности успешно получен.")]
     [SwaggerResponse(statusCode: 400, type: typeof(ErrorResponse), description: "Отсутствует заголовок.")]
