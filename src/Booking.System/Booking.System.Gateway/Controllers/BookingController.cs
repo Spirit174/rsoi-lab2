@@ -234,7 +234,7 @@ public class BookingController: ControllerBase
     /// Забронировать отель.
     /// </summary>
     /// <param name="request">Данные для бронирования отеля.</param>
-    /// <response code="201">Бронирование успешно создано.</response>
+    /// <response code="200">Бронирование успешно создано.</response>
     /// <response code="400">Отсутствует заголовок или невалидные данные запроса.</response>
     /// <response code="404">Отель не найден.</response>
     /// <response code="500">Ошибка на стороне сервера.</response>
@@ -270,7 +270,7 @@ public class BookingController: ControllerBase
             var reservationResponse = new CreateReservationResponse(reservationUid, request.HotelUid, request.StartDate, request.EndDate,
                 loyalty.Discount, payment.Status, payment);
             
-            return StatusCode(201, reservationResponse);
+            return StatusCode(200, reservationResponse);
         }
         catch (HotelNotFoundException e)
         {

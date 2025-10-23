@@ -182,7 +182,7 @@ public class ReservationClient: IReservationClient
         RestRequest? request = null;
         try
         {
-            var requestUrl = $"/reservations/user/{userName}";
+            var requestUrl = $"api/v1/reservations/user/{userName}";
 
             request = new RestRequest(requestUrl, Method.Get);
 
