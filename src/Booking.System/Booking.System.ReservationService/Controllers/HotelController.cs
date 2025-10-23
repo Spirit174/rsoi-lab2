@@ -1,4 +1,5 @@
-﻿using Booking.System.ReservationService.Core.Interfaces;
+﻿using System.Text.Json;
+using Booking.System.ReservationService.Core.Interfaces;
 using Booking.System.ReservationService.DTO.Converters;
 using Booking.System.ReservationService.DTO.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -28,9 +29,13 @@ public class HotelController: ControllerBase
         _logger.LogInformation($"GetHotelsPages: {page}/{size}");
         try
         {
-            var hotels = await _hotelService.GetHotelsByPagesAsync(page, size);
-
-            return Ok(HotelPagesDtoConverter.Convert(hotels));
+            var pages = await _hotelService.GetHotelsByPagesAsync(page, size);
+            _logger.LogInformation("Returning hotels: {Page}, {Size}, {Total}, {ItemsCount}", 
+                pages.Page, pages.Size, pages.TotalElements, pages.Hotels?.Count);
+            
+            var json = JsonSerializer.Serialize(pages);
+            _logger.LogInformation("Serialized JSON: {Json}", json);
+            return Ok(HotelPagesDtoConverter.Convert(pages));
         }
         catch (Exception e)
         {

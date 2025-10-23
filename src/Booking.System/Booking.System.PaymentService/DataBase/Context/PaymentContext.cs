@@ -1,4 +1,5 @@
 ﻿using Booking.System.PaymentService.DataBase.Models;
+using Booking.System.PaymentService.DataBase.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Booking.System.PaymentService.DataBase.Context;
@@ -21,7 +22,7 @@ public class PaymentContext(DbContextOptions<PaymentContext> options) : DbContex
             
             entity.Property(p => p.PaymentStatus)
                 .HasConversion<string>()
-                .HasDefaultValue("PAID")
+                .HasDefaultValue(DbPaymentStatus.PAID)
                 .HasColumnName("status");
             
             entity.Property(p => p.Price)

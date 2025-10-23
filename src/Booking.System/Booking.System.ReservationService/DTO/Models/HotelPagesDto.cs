@@ -36,16 +36,16 @@ public class HotelPagesDto
     [Required]
     [DataMember(Name = "items")]
     [JsonPropertyName("items")]
-    public List<HotelDto> Hotels { get; set; }
+    public List<HotelDto> Items { get; set; }
 
     public HotelPagesDto(int page, 
         int size,
         int totalElements,
-        List<HotelDto> hotels)
+        List<HotelDto> items)
     {
         Page = page;
         Size = size;
         TotalElements = totalElements;
-        Hotels = hotels;
+        Items = items;
     }
 }
