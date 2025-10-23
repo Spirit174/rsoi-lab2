@@ -72,7 +72,7 @@ public class ReservationContext(DbContextOptions<ReservationContext> options) : 
             
             entity.HasOne(r => r.Hotel)
                 .WithMany(h => h.Reservations)
-                .HasForeignKey(r => r.HotelUid);
+                .HasForeignKey(r => r.Id);
             
         });
 
