@@ -97,6 +97,8 @@ public class BookingController: ControllerBase
         
             var userInfo = new UserInfoDto(list, loyalty);
 
+            var json = JsonSerializer.Serialize(userInfo);
+            _logger.LogInformation("Serialized JSON: {Json}", json);
             return Ok(userInfo);
         }
         catch (Exception e)
@@ -149,6 +151,8 @@ public class BookingController: ControllerBase
                 list.Add(reser);
             }
             
+            var json = JsonSerializer.Serialize(list);
+            _logger.LogInformation("Serialized JSON: {Json}", json);
             return Ok(list);
         }
         catch (Exception e)
@@ -195,6 +199,8 @@ public class BookingController: ControllerBase
             var res = new ReservationDtoWithHotelAndPayment(reservation.ReservationUid, hotelDtoWithFullAddress,
                 reservation.StartDate, reservation.EndDate, reservation.Status, payment);
             
+            var json = JsonSerializer.Serialize(res);
+            _logger.LogInformation("Serialized JSON: {Json}", json);
             return Ok(res);
         }
         catch (HotelNotFoundException e)
