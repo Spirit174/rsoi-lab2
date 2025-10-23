@@ -45,7 +45,7 @@ public class BookingController: ControllerBase
         try
         {
             var pages = await _reservationClient.GetHotelsPageAsync(page, size);
-            return Ok(pages.Hotels.Count == 0 ? new HotelPagesDto(page, size, 0, []) : pages);
+            return Ok(pages);
         }
         catch (Exception e)
         {

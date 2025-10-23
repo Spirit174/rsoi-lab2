@@ -22,7 +22,7 @@ public class PaymentController: ControllerBase
     /// <summary>
     /// Отменить платеж.
     /// </summary>
-    [HttpPut("/payment/{paymentId}")]
+    [HttpPut("payment/{paymentId}")]
     public async Task<ActionResult> UpdatePayment([FromRoute] Guid paymentId)
     {
         _logger.LogInformation($"UpdatePayment: {paymentId}");
@@ -46,7 +46,7 @@ public class PaymentController: ControllerBase
     /// <summary>
     /// Создать платеж.
     /// </summary>
-    [HttpPost("/payment/{price}")]
+    [HttpPost("payment/{price}")]
     public async Task<ActionResult<PaymentIdDto>> CreatePayment([FromRoute] int price)
     {
         _logger.LogInformation($"CreatePayment: {price}");
@@ -67,7 +67,7 @@ public class PaymentController: ControllerBase
     /// <summary>
     /// Получить платеж по идентификатору.
     /// </summary>
-    [HttpGet("/payment/{paymentId}")]
+    [HttpGet("payment/{paymentId}")]
     public async Task<ActionResult<PaymentInfoDto>> GetPayment([FromRoute] Guid paymentId)
     {
         _logger.LogInformation($"GetPayment: {paymentId}");

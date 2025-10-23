@@ -22,7 +22,7 @@ public class LoyaltyController: ControllerBase
     /// <summary>
     /// Получить информацию о статусе в программе лояльности.
     /// </summary>
-    [HttpGet("/loyalty/{userName}")]
+    [HttpGet("loyalty/{userName}")]
     public async Task<ActionResult<LoyaltyInfoDto>> GetLoyaltyInfo([FromRoute] string userName)
     {
         try
@@ -44,7 +44,7 @@ public class LoyaltyController: ControllerBase
     /// <summary>
     /// Обновить после бронирования или отмены бронирования.
     /// </summary>
-    [HttpPost("/loyalty/{userName}")]
+    [HttpPost("loyalty/{userName}")]
     public async Task<ActionResult> UpdateLoyalty([FromRoute] string userName, [FromBody] IncreaseBool isIncreaseBool)
     {
         try

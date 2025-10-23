@@ -22,7 +22,7 @@ public class ReservationController: ControllerBase
     /// <summary>
     /// Отмена бронирования.
     /// </summary>
-    [HttpPost("/reservations/{reservationId}")]
+    [HttpPost("reservations/{reservationId}")]
     public async Task<ActionResult> CancelReservation([FromRoute] Guid reservationId)
     {
         _logger.LogInformation($"CancelReservation: {reservationId}");
@@ -44,7 +44,7 @@ public class ReservationController: ControllerBase
     /// <summary>
     /// Получить информацию о бронировании по идентифкатору.
     /// </summary>
-    [HttpGet("/reservations/{reservationId}")]
+    [HttpGet("reservations/{reservationId}")]
     public async Task<ActionResult<ReservationDto>> GetReservationId([FromRoute] Guid reservationId)
     {
         _logger.LogInformation($"GetReservationId: {reservationId}");
@@ -68,7 +68,7 @@ public class ReservationController: ControllerBase
     /// <summary>
     /// Создать бронь.
     /// </summary>
-    [HttpPost("/reservations")]
+    [HttpPost("reservations")]
     public async Task<ActionResult> CreateReservation([FromBody] CreateReservationDto createReservationDto)
     {
         _logger.LogInformation($"CreateReservation: {createReservationDto}");
@@ -90,7 +90,7 @@ public class ReservationController: ControllerBase
     /// <summary>
     /// Получить все брони пользователя.
     /// </summary>
-    [HttpGet("/reservations/user/{userName}")]
+    [HttpGet("reservations/user/{userName}")]
     public async Task<ActionResult<List<ReservationDto>>> GetReservationsById([FromRoute] string userName)
     {
         _logger.LogInformation($"GetReservationsById: {userName}");

@@ -22,7 +22,7 @@ public class HotelController: ControllerBase
     /// <summary>
     /// Получить страницу отелей.
     /// </summary>
-    [HttpGet("/hotels")]
+    [HttpGet("hotels")]
     public async Task<ActionResult<HotelPagesDto>> GetHotelsPages([FromQuery] int page, [FromQuery] int size)
     {
         _logger.LogInformation($"GetHotelsPages: {page}/{size}");
@@ -43,7 +43,7 @@ public class HotelController: ControllerBase
     /// <summary>
     /// Получить отель по идентификатору.
     /// </summary>
-    [HttpGet("/hotels/{hotelId}")]
+    [HttpGet("hotels/{hotelId}")]
     public async Task<ActionResult<HotelDto>> GetHotelById([FromRoute] Guid hotelId)
     {
         _logger.LogInformation($"GetHotelById: {hotelId}");
