@@ -132,7 +132,10 @@ public class BookingController: ControllerBase
                 return BadRequest("X-User-Name header is required");
             
             var reservations = await _reservationClient.GetReservationByUsername(username);
-        
+            
+            if (reservations.Count == 0)
+                return Ok(new List<ReservationDtoWithHotelAndPayment>());
+            
             var list = new List<ReservationDtoWithHotelAndPayment>();
 
             foreach (var reservation in reservations)
@@ -267,7 +270,7 @@ public class BookingController: ControllerBase
             await _reservationClient.CreateReservation(new CreateReservationDto(username, paymentUid, request.HotelUid, request.StartDate, request.EndDate));
             await _loyaltyClient.UpdateLoyaltyReservationCountAsync(username, true);
 
-            var reservationResponse = new CreateReservationResponse(reservationUid, request.HotelUid, request.StartDate, request.EndDate,
+            var reservationResponse = new CreateReservationResponse(reservationUid, request.HotelUid, DateOnly.FromDateTime(request.StartDate), DateOnly.FromDateTime(request.EndDate),
                 loyalty.Discount, payment.Status, payment);
             
             return StatusCode(200, reservationResponse);

@@ -29,7 +29,7 @@ public class CreateReservationResponse
     [Required]
     [DataMember(Name = "startDate")]
     [JsonPropertyName("startDate")]
-    public DateTime StartDate { get; set; }
+    public DateOnly StartDate { get; set; }
     
     /// <summary>
     /// Конец бррони.
@@ -37,7 +37,7 @@ public class CreateReservationResponse
     [Required]
     [DataMember(Name = "endDate")]
     [JsonPropertyName("endDate")]
-    public DateTime EndDate { get; set; }
+    public DateOnly EndDate { get; set; }
     
     /// <summary>
     /// Скидка.
@@ -65,8 +65,8 @@ public class CreateReservationResponse
 
     public CreateReservationResponse(Guid reservationUid,
         Guid hotelUid,
-        DateTime startDate,
-        DateTime endDate,
+        DateOnly startDate,
+        DateOnly endDate,
         int discount,
         string status,
         PaymentInfoDto paymentInfo)
