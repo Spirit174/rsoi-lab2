@@ -259,7 +259,7 @@ public class BookingController: ControllerBase
             var countDays = difference.Days;
             var loyalty = await _loyaltyClient.GetLoyaltyAsync(username);
             var price = countDays * hotel.Price * (1 - loyalty.Discount / 100);
-            _logger.LogInformation($"!!! {difference}, {countDays}, {loyalty}, {price}");
+            _logger.LogInformation($"!!! {difference}, {countDays}, {hotel.Price}, {price}");
             
             var paymentUid = await _paymentClient.CreatePaymentAsync(price);
             var payment = await _paymentClient.GetPaymentAsync(paymentUid);
