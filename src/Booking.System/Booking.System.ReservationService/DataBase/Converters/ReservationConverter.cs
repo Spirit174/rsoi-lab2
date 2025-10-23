@@ -7,15 +7,13 @@ namespace Booking.System.ReservationService.DataBase.Converters;
 
 public class ReservationConverter
 {
-    public static Reservation? Convert(DbReservation? reservation)
+    public static Reservation Convert(DbReservation reservation, Guid dbHotelId)
     {
-        if (reservation == null)
-            return null;
         return new Reservation(reservation.Id,
             reservation.ReservationUid,
             reservation.Username,
             reservation.PaymentUid,
-            reservation.Hotel.HotelUid,
+            dbHotelId,
             PaymentStatusConverter.Convert(reservation.Status),
             reservation.StartDate,
             reservation.EndDate);

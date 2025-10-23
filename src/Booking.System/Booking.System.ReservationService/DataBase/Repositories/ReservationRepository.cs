@@ -34,15 +34,34 @@ public class ReservationRepository : IReservationRepository
         _logger.LogDebug("Getting reservation with id: {HotelId}", reservationUid);
         
         var dbReservation = await _context.Reservations.FirstOrDefaultAsync(p => p.ReservationUid == reservationUid);
-        return ReservationConverter.Convert(dbReservation);
+        if (dbReservation == null)
+            return null;
+        var dbHotel = await _context.Hotels.FirstOrDefaultAsync(h => h.Id == dbReservation.HotelId);
+        if (dbHotel == null)
+            return null;
+        return ReservationConverter.Convert(dbReservation, dbHotel.HotelUid);
     }
     
     public async Task<List<Reservation?>> GetReservationByUserNameAsync(string userName)
     {
         _logger.LogDebug("Getting reservations with username: {UserName}", userName);
-        
-        var dbReservations = await _context.Reservations.Where(p => p.Username == userName).ToListAsync();
-        return dbReservations.ConvertAll(ReservationConverter.Convert);
+    
+        var dbReservations = await _context.Reservations
+            .Where(p => p.Username == userName)
+            .ToListAsync();
+
+        var result = new List<Reservation?>();
+    
+        foreach (var dbReservation in dbReservations)
+        {
+            var dbHotel = await _context.Hotels.FirstOrDefaultAsync(h => h.Id == dbReservation.HotelId);
+            if (dbHotel != null)
+            {
+                result.Add(ReservationConverter.Convert(dbReservation, dbHotel.HotelUid));
+            }
+        }
+    
+        return result;
     }
     
     public async Task<bool> CancelReservation(Guid reservationUid)

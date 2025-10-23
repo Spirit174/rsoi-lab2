@@ -47,13 +47,13 @@ public class CreateReservationDto
     public DateTime EndDate { get; set; }
 
     public CreateReservationDto(string username,
-        Guid reservationUid,
+        Guid paymentUid,
         Guid hotelUid,
         DateTime startDate,
         DateTime endDate)
     {
         Username = username;
-        PaymentUid = reservationUid;
+        PaymentUid = paymentUid;
         HotelUid = hotelUid;
         StartDate = startDate;
         EndDate = endDate;

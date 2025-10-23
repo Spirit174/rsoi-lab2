@@ -163,13 +163,13 @@ public class ReservationClient: IReservationClient
                 .AddJsonBody(createReservationDto);
 
             _logger.LogDebug("Reservation API call {Method} {RequestUrl}. To create reservation by Id {ReservationId}",
-                request.Method, requestUrl, createReservationDto.ReservationUid);
+                request.Method, requestUrl, createReservationDto.PaymentUid);
 
             await _client.PostAsync(request);
 
             _logger.LogInformation(
                 "Reservation API call {Method} {RequestUrl} successfully. To created reservation by Id {ReservationId}",
-                request.Method, requestUrl, createReservationDto.ReservationUid);
+                request.Method, requestUrl, createReservationDto.PaymentUid);
         }
         catch (Exception e)
         {

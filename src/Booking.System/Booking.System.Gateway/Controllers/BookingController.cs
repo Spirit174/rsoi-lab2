@@ -182,25 +182,19 @@ public class BookingController: ControllerBase
             if (string.IsNullOrEmpty(username))
                 return BadRequest("X-User-Name header is required");
             
-            var reservations = await _reservationClient.GetReservationByUsername(username);
-            ReservationDtoWithHotelAndPayment? res = null;
+            var reservation = await _reservationClient.GetReservationById(reservationUid);
             
-            foreach (var reservation in reservations)
-            {
-                if (reservation.ReservationUid == reservationUid)
-                {
-                    var hotel = await _reservationClient.GetHotelByIdAsync(reservation.HotelUid);
+            var hotel = await _reservationClient.GetHotelByIdAsync(reservation.HotelUid);
 
-                    var fullAddress = hotel.Country + ", " + hotel.City + ", " + hotel.Address;
+            var fullAddress = hotel.Country + ", " + hotel.City + ", " + hotel.Address;
 
-                    var payment = await _paymentClient.GetPaymentAsync(reservation.PaymentUid);
+            var payment = await _paymentClient.GetPaymentAsync(reservation.PaymentUid);
 
-                    var hotelDtoWithFullAddress =
-                        new HotelDtoWithFullAddress(hotel.HotelUid, hotel.Name, fullAddress, hotel.Stars);
-                    res = new ReservationDtoWithHotelAndPayment(reservation.ReservationUid, hotelDtoWithFullAddress,
-                        reservation.StartDate, reservation.EndDate, reservation.Status, payment);
-                }
-            }
+            var hotelDtoWithFullAddress =
+                new HotelDtoWithFullAddress(hotel.HotelUid, hotel.Name, fullAddress, hotel.Stars);
+            var res = new ReservationDtoWithHotelAndPayment(reservation.ReservationUid, hotelDtoWithFullAddress,
+                reservation.StartDate, reservation.EndDate, reservation.Status, payment);
+            
             return Ok(res);
         }
         catch (HotelNotFoundException e)
