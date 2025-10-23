@@ -13,7 +13,7 @@ public class ReservationContext(DbContextOptions<ReservationContext> options) : 
     {
         modelBuilder.Entity<DbHotel>(entity =>
         {
-            entity.ToTable("hotels"); 
+            entity.ToTable("hotel"); 
             
             entity.Property(p => p.Id)
                 .HasColumnName("id"); 
@@ -42,7 +42,7 @@ public class ReservationContext(DbContextOptions<ReservationContext> options) : 
 
         modelBuilder.Entity<DbReservation>(entity =>
         {
-            entity.ToTable("reservations"); 
+            entity.ToTable("reservation"); 
         
             entity.Property(pp => pp.Id)
                 .HasColumnName("id");

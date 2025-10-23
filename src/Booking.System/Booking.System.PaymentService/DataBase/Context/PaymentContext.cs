@@ -11,7 +11,7 @@ public class PaymentContext(DbContextOptions<PaymentContext> options) : DbContex
     {
         modelBuilder.Entity<DbPayment>(entity =>
         {
-            entity.ToTable("payments"); 
+            entity.ToTable("payment"); 
 
             entity.Property(p => p.Id)
                 .HasColumnName("id"); 

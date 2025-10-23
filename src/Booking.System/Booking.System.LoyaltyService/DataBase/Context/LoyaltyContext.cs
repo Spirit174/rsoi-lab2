@@ -12,7 +12,7 @@ public class LoyaltyContext(DbContextOptions<LoyaltyContext> options) : DbContex
     {
         modelBuilder.Entity<DbLoyalty>(entity =>
         {
-            entity.ToTable("loyalties"); 
+            entity.ToTable("loyalty"); 
         
             entity.HasIndex(p => p.Username)
                 .IsUnique();
