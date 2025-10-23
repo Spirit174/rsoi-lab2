@@ -46,11 +46,7 @@ public class BookingController: ControllerBase
         try
         {
             var pages = await _reservationClient.GetHotelsPageAsync(page, size);
-            _logger.LogInformation("Returning hotels: {Page}, {Size}, {Total}, {ItemsCount}", 
-                pages.Page, pages.PageSize, pages.TotalElements, pages.Items?.Count);
             
-            var json = JsonSerializer.Serialize(pages);
-            _logger.LogInformation("Serialized JSON: {Json}", json);
             return Ok(pages);
         }
         catch (Exception e)
@@ -272,7 +268,8 @@ public class BookingController: ControllerBase
 
             var reservationResponse = new CreateReservationResponse(reservationUid, request.HotelUid, DateOnly.FromDateTime(request.StartDate), DateOnly.FromDateTime(request.EndDate),
                 loyalty.Discount, payment.Status, payment);
-            
+            var json = JsonSerializer.Serialize(reservationResponse);
+            _logger.LogInformation("Serialized JSON: {Json}", json);
             return StatusCode(200, reservationResponse);
         }
         catch (HotelNotFoundException e)

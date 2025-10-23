@@ -42,9 +42,7 @@ public class ReservationRepository : IReservationRepository
         _logger.LogDebug("Getting reservations with username: {UserName}", userName);
         
         var dbReservations = await _context.Reservations.Where(p => p.Username == userName).ToListAsync();
-        if (dbReservations.Count == 0)
-            return new List<Reservation>();
-        return dbReservations.ConvertAll(ReservationConverter.Convert);
+        return dbReservations.Count == 0 ? [] : dbReservations.ConvertAll(ReservationConverter.Convert);
     }
     
     public async Task<bool> CancelReservation(Guid reservationUid)
