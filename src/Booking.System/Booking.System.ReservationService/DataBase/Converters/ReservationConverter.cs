@@ -13,19 +13,19 @@ public class ReservationConverter
             reservation.ReservationUid,
             reservation.Username,
             reservation.PaymentUid,
-            reservation.HotelUid,
+            reservation.Hotel.HotelUid,
             PaymentStatusConverter.Convert(reservation.Status),
             reservation.StartDate,
             reservation.EndDate);
     }
     
-    public static DbReservation Convert(Reservation reservation)
+    public static DbReservation Convert(Reservation reservation, DbHotel hotel)
     {
         return new DbReservation(reservation.Id,
             reservation.ReservationUid,
             reservation.Username,
             reservation.PaymentUid,
-            reservation.HotelUid,
+            hotel.Id,
             PaymentStatusConverter.Convert(reservation.Status),
             reservation.StartDate,
             reservation.EndDate);

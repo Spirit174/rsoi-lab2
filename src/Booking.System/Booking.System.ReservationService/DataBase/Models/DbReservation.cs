@@ -15,7 +15,7 @@ public class DbReservation
     
     public Guid PaymentUid { get; set; }
     
-    public Guid HotelUid { get; set; }
+    public int HotelId { get; set; }
     
     public DbPaymentStatus Status { get; set; }
     
@@ -30,7 +30,7 @@ public class DbReservation
         Guid reservationUid,
         string username,
         Guid paymentUid,
-        Guid hotelUid,
+        int hotelId,
         DbPaymentStatus status,
         DateTime startDate,
         DateTime endDate)
@@ -40,7 +40,7 @@ public class DbReservation
         Username = username;
         Status = status;
         PaymentUid = paymentUid;
-        HotelUid = hotelUid;
+        HotelId = hotelId;
         Status = status;
         StartDate = startDate;
         EndDate = endDate;

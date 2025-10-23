@@ -56,7 +56,7 @@ public class ReservationContext(DbContextOptions<ReservationContext> options) : 
             entity.Property(pp => pp.PaymentUid)
                 .HasColumnName("payment_uid");
             
-            entity.Property(pp => pp.HotelUid)
+            entity.Property(pp => pp.HotelId)
                 .HasColumnName("hotel_id");
             
             entity.Property(p => p.Status)
@@ -65,14 +65,14 @@ public class ReservationContext(DbContextOptions<ReservationContext> options) : 
                 .HasColumnName("status");
             
             entity.Property(pp => pp.StartDate)
-                .HasColumnName("start_day");
+                .HasColumnName("start_date");
             
             entity.Property(pp => pp.EndDate)
                 .HasColumnName("end_date");
             
             entity.HasOne(r => r.Hotel)
                 .WithMany(h => h.Reservations)
-                .HasForeignKey(r => r.Id);
+                .HasForeignKey(r => r.HotelId);
             
         });
 

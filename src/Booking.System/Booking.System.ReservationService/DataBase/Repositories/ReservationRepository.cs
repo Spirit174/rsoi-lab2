@@ -22,8 +22,8 @@ public class ReservationRepository : IReservationRepository
     public async Task CreateReservationAsync(Reservation reservation)
     {
         _logger.LogDebug("Creating reservation with id: {ReservationUid}", reservation.ReservationUid);
-        
-        await _context.Reservations.AddAsync(ReservationConverter.Convert(reservation));
+        var dbHotel = await _context.Hotels.FirstOrDefaultAsync(p => p.HotelUid == reservation.HotelUid);
+        await _context.Reservations.AddAsync(ReservationConverter.Convert(reservation, dbHotel!));
         await _context.SaveChangesAsync();
         
         _logger.LogInformation("Successfully created reservation with id: {ReservationUid}", reservation.ReservationUid);
