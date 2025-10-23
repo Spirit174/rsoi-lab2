@@ -47,7 +47,7 @@ public class BookingController: ControllerBase
         {
             var pages = await _reservationClient.GetHotelsPageAsync(page, size);
             _logger.LogInformation("Returning hotels: {Page}, {Size}, {Total}, {ItemsCount}", 
-                pages.Page, pages.Size, pages.TotalElements, pages.Items?.Count);
+                pages.Page, pages.PageSize, pages.TotalElements, pages.Items?.Count);
             
             var json = JsonSerializer.Serialize(pages);
             _logger.LogInformation("Serialized JSON: {Json}", json);

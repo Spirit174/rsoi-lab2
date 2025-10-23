@@ -20,7 +20,7 @@ public class HotelPagesDto
     [Required]
     [DataMember(Name = "pageSize")]
     [JsonPropertyName("pageSize")]
-    public int Size { get; set; }
+    public int PageSize { get; set; }
     
     /// <summary>
     /// Общее количество элементов.
@@ -39,12 +39,12 @@ public class HotelPagesDto
     public List<HotelDto> Items { get; set; }
 
     public HotelPagesDto(int page, 
-        int size,
+        int pageSize,
         int totalElements,
         List<HotelDto> items)
     {
         Page = page;
-        Size = size;
+        PageSize = pageSize;
         TotalElements = totalElements;
         Items = items;
     }
