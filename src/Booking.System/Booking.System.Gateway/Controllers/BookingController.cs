@@ -258,19 +258,18 @@ public class BookingController: ControllerBase
             var difference = request.EndDate - request.StartDate;
             var countDays = difference.Days;
             var loyalty = await _loyaltyClient.GetLoyaltyAsync(username);
-            var price = countDays * hotel.Price * (1 - loyalty.Discount / 100);
-            _logger.LogInformation($"!!! {difference}, {countDays}, {hotel.Price}, {price}");
+            var price = countDays * hotel.Price * (100 - loyalty.Discount) / 100;
+            _logger.LogInformation($"!!! {difference}, {countDays}, {hotel.Price}, {loyalty.Discount}");
             
             var paymentUid = await _paymentClient.CreatePaymentAsync(price);
             var payment = await _paymentClient.GetPaymentAsync(paymentUid);
             
-            await _reservationClient.CreateReservation(new CreateReservationDto(username, paymentUid, request.HotelUid, request.StartDate, request.EndDate));
+            await _reservationClient.CreateReservation(new CreateReservationDto(reservationUid, username, paymentUid, request.HotelUid, request.StartDate, request.EndDate));
             await _loyaltyClient.UpdateLoyaltyReservationCountAsync(username, true);
 
             var reservationResponse = new CreateReservationResponse(reservationUid, request.HotelUid, DateOnly.FromDateTime(request.StartDate), DateOnly.FromDateTime(request.EndDate),
                 loyalty.Discount, payment.Status, payment);
-            var json = JsonSerializer.Serialize(reservationResponse);
-            _logger.LogInformation("Serialized JSON: {Json}", json);
+            
             return StatusCode(200, reservationResponse);
         }
         catch (HotelNotFoundException e)

@@ -21,8 +21,7 @@ public class ReservationConverter
     
     public static DbReservation Convert(Reservation reservation, DbHotel hotel)
     {
-        return new DbReservation(reservation.Id,
-            reservation.ReservationUid,
+        return new DbReservation(reservation.ReservationUid,
             reservation.Username,
             reservation.PaymentUid,
             hotel.Id,

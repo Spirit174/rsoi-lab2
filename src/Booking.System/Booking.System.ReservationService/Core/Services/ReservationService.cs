@@ -16,10 +16,10 @@ public class ReservationService: IReservationService
         _reservationRepository = reservationRepository;
     }
     
-    public async Task<Reservation> CreateReservationAsync(string userName, Guid paymentUid, Guid hotelUid, DateTime startDate, DateTime endDate)
+    public async Task<Reservation> CreateReservationAsync(Guid reservationUid, string userName, Guid paymentUid, Guid hotelUid, DateTime startDate, DateTime endDate)
     {
         _logger.LogDebug("Creating reservation for user with username: {UserName}", userName);
-        var reservation = new Reservation(1, Guid.NewGuid(), userName, paymentUid, hotelUid,
+        var reservation = new Reservation(default, reservationUid, userName, paymentUid, hotelUid,
             PaymentStatus.PAID, startDate, endDate);
         await _reservationRepository.CreateReservationAsync(reservation);
         _logger.LogInformation("Successfully created reservation with id: {ReservationUid}", reservation.ReservationUid);

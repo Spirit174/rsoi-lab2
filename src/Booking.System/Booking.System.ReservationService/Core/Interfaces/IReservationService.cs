@@ -15,7 +15,7 @@ public interface IReservationService
     /// <param name="hotelUid">Идентификатор отеля.</param>
     /// <param name="startDate">Дата начала бронирования.</param>
     /// <param name="endDate">Дата окончания бронирования.</param>
-    Task<Reservation> CreateReservationAsync(string userName, Guid paymentUid, Guid hotelUid, DateTime startDate, DateTime endDate);
+    Task<Reservation> CreateReservationAsync(Guid reservationUid, string userName, Guid paymentUid, Guid hotelUid, DateTime startDate, DateTime endDate);
 
     /// <summary>
     /// Получает бронирование по уникальному идентификатору.

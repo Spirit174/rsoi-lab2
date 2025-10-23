@@ -14,12 +14,10 @@ public class DbPayment
     
     public int Price { get; set; }
 
-    public DbPayment(int id,
-        Guid paymentUid,
+    public DbPayment(Guid paymentUid,
         DbPaymentStatus paymentStatus,
         int price)
     {
-        Id = id;
         PaymentUid = paymentUid;
         PaymentStatus = paymentStatus;
         Price = price;

@@ -26,8 +26,7 @@ public class DbReservation
     [ForeignKey("HotelId")]
     public virtual DbHotel Hotel { get; set; } = null!;
 
-    public DbReservation(int id,
-        Guid reservationUid,
+    public DbReservation(Guid reservationUid,
         string username,
         Guid paymentUid,
         int hotelId,
@@ -35,7 +34,6 @@ public class DbReservation
         DateTime startDate,
         DateTime endDate)
     {
-        Id = id;
         ReservationUid = reservationUid;
         Username = username;
         Status = status;

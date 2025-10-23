@@ -10,6 +10,14 @@ public class CreateReservationDto
     /// Идентификатор брони.
     /// </summary>
     [Required]
+    [DataMember(Name = "reservationUid")]
+    [JsonPropertyName("reservationUid")]
+    public Guid ReservationUid { get; set; }
+     
+    /// <summary>
+    /// Имя.
+    /// </summary>
+    [Required]
     [DataMember(Name = "userName")]
     [JsonPropertyName("userName")]
     public string Username { get; set; }
@@ -46,12 +54,14 @@ public class CreateReservationDto
     [JsonPropertyName("endDate")]
     public DateTime EndDate { get; set; }
 
-    public CreateReservationDto(string username,
+    public CreateReservationDto(Guid reservationUid,
+        string username,
         Guid paymentUid,
         Guid hotelUid,
         DateTime startDate,
         DateTime endDate)
     {
+        ReservationUid = reservationUid;
         Username = username;
         PaymentUid = paymentUid;
         HotelUid = hotelUid;

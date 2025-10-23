@@ -61,7 +61,7 @@ public class CreateReservationResponse
     [Required]
     [DataMember(Name = "payment")]
     [JsonPropertyName("payment")]
-    public PaymentInfoDto PaymentInfo { get; set; }
+    public PaymentInfoDto Payment { get; set; }
 
     public CreateReservationResponse(Guid reservationUid,
         Guid hotelUid,
@@ -69,7 +69,7 @@ public class CreateReservationResponse
         DateOnly endDate,
         int discount,
         string status,
-        PaymentInfoDto paymentInfo)
+        PaymentInfoDto payment)
     {
         ReservationUid = reservationUid;
         HotelUid = hotelUid;
@@ -77,6 +77,6 @@ public class CreateReservationResponse
         EndDate = endDate;
         Discount = discount;
         Status = status;
-        PaymentInfo = paymentInfo;
+        Payment = payment;
     }
 }

@@ -17,8 +17,7 @@ public class PaymentConverter
     
     public static DbPayment Convert(Payment payment)
     {
-        return new DbPayment(payment.Id,
-            payment.PaymentUid,
+        return new DbPayment(payment.PaymentUid,
             PaymentStatusConverter.Convert(payment.PaymentStatus),
             payment.Price);
     }

@@ -28,7 +28,7 @@ public class PaymentController: ControllerBase
         _logger.LogInformation($"UpdatePayment: {paymentId}");
         try
         {
-            if (await _paymentService.CancelPayment(paymentId))
+            if (!await _paymentService.CancelPayment(paymentId))
             {
                 return BadRequest(new ErrorResponse("Нeт такого платежа."));
             }

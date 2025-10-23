@@ -10,9 +10,9 @@ public class UserInfoDto
     /// Список броней.
     /// </summary>
     [Required]
-    [DataMember(Name = "hotel")]
-    [JsonPropertyName("hotel")]
-    public List<ReservationDtoWithHotelAndPayment> Hotels { get; set; }
+    [DataMember(Name = "reservations")]
+    [JsonPropertyName("reservations")]
+    public List<ReservationDtoWithHotelAndPayment> Reservations { get; set; }
     
     /// <summary>
     /// Информация о скидке.
@@ -20,12 +20,12 @@ public class UserInfoDto
     [Required]
     [DataMember(Name = "loyalty")]
     [JsonPropertyName("loyalty")]
-    public LoyaltyInfoDto LoyaltyInfo { get; set; }
+    public LoyaltyInfoDto Loyalty { get; set; }
     
-    public UserInfoDto(List<ReservationDtoWithHotelAndPayment> hotels,
+    public UserInfoDto(List<ReservationDtoWithHotelAndPayment> reservations,
         LoyaltyInfoDto loyalty)
     {
-        Hotels = hotels;
-        LoyaltyInfo = loyalty;
+        Reservations = reservations;
+        Loyalty = loyalty;
     }
 }

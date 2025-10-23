@@ -111,6 +111,7 @@ public class ReservationServiceTests
     {
         // Arrange
         var createReservationDto = new CreateReservationDto(
+            Guid.NewGuid(),
             "testUser",
             Guid.NewGuid(),
             Guid.NewGuid(),
@@ -120,6 +121,7 @@ public class ReservationServiceTests
 
         _reservationServiceMock
             .Setup(x => x.CreateReservationAsync(
+                createReservationDto.ReservationUid,
                 createReservationDto.Username,
                 createReservationDto.PaymentUid,
                 createReservationDto.HotelUid,
