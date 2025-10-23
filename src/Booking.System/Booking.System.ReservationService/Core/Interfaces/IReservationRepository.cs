@@ -25,7 +25,7 @@ public interface IReservationRepository
     /// </summary>
     /// <param name="userName">Имя пользователя.</param>
     /// <returns>Список бронирований пользователя.</returns>
-    Task<List<Reservation>> GetReservationByUserNameAsync(string userName);
+    Task<List<Reservation?>> GetReservationByUserNameAsync(string userName);
 
     /// <summary>
     /// Отменяет бронирование.

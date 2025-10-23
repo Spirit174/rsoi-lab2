@@ -6,8 +6,10 @@ namespace Booking.System.ReservationService.DTO.Converters;
 
 public class ReservationConverter
 {
-    public static ReservationDto Convert(Reservation reservation)
+    public static ReservationDto? Convert(Reservation? reservation)
     {
+        if (reservation == null)
+            return null;
         return new ReservationDto(reservation.ReservationUid,
             reservation.HotelUid,
             reservation.PaymentUid,

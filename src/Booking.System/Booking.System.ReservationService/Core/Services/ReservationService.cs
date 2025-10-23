@@ -32,7 +32,7 @@ public class ReservationService: IReservationService
         return await _reservationRepository.GetReservationByReservationIdAsync(reservationUid);
     }
     
-    public async Task<List<Reservation>> GetReservationByUserNameAsync(string userName)
+    public async Task<List<Reservation?>> GetReservationByUserNameAsync(string userName)
     {
         _logger.LogDebug("Getting reservations for user: {UserName}", userName);
         

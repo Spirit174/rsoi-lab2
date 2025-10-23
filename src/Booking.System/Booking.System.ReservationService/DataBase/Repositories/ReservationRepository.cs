@@ -37,12 +37,12 @@ public class ReservationRepository : IReservationRepository
         return ReservationConverter.Convert(dbReservation);
     }
     
-    public async Task<List<Reservation>> GetReservationByUserNameAsync(string userName)
+    public async Task<List<Reservation?>> GetReservationByUserNameAsync(string userName)
     {
         _logger.LogDebug("Getting reservations with username: {UserName}", userName);
         
         var dbReservations = await _context.Reservations.Where(p => p.Username == userName).ToListAsync();
-        return dbReservations.Count == 0 ? [] : dbReservations.ConvertAll(ReservationConverter.Convert);
+        return dbReservations.ConvertAll(ReservationConverter.Convert);
     }
     
     public async Task<bool> CancelReservation(Guid reservationUid)

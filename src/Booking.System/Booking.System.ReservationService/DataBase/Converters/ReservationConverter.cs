@@ -7,8 +7,10 @@ namespace Booking.System.ReservationService.DataBase.Converters;
 
 public class ReservationConverter
 {
-    public static Reservation Convert(DbReservation reservation)
+    public static Reservation? Convert(DbReservation? reservation)
     {
+        if (reservation == null)
+            return null;
         return new Reservation(reservation.Id,
             reservation.ReservationUid,
             reservation.Username,
