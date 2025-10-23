@@ -28,7 +28,7 @@ public class ReservationDtoWithHotelAndPayment
     [Required]
     [DataMember(Name = "startDate")]
     [JsonPropertyName("startDate")]
-    public DateTime StartDate { get; set; }
+    public DateOnly StartDate { get; set; }
     
     /// <summary>
     /// Конец брони.
@@ -36,7 +36,7 @@ public class ReservationDtoWithHotelAndPayment
     [Required]
     [DataMember(Name = "endDate")]
     [JsonPropertyName("endDate")]
-    public DateTime EndDate { get; set; }
+    public DateOnly EndDate { get; set; }
     
     /// <summary>
     /// Статус брони.
@@ -56,8 +56,8 @@ public class ReservationDtoWithHotelAndPayment
     
     public ReservationDtoWithHotelAndPayment(Guid reservationUid,
         HotelDtoWithFullAddress hotelDtoWithFullAddress,
-        DateTime startDate,
-        DateTime endDate,
+        DateOnly startDate,
+        DateOnly endDate,
         string status,
         PaymentInfoDto payment)
     {

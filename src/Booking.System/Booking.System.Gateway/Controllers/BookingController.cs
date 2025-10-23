@@ -90,7 +90,7 @@ public class BookingController: ControllerBase
             
                 var hotelDtoWithFullAddress = new HotelDtoWithFullAddress(hotel.HotelUid, hotel.Name, fullAddress, hotel.Stars);
                 var reser = new ReservationDtoWithHotelAndPayment(reservation.ReservationUid, hotelDtoWithFullAddress,
-                    reservation.StartDate, reservation.EndDate, reservation.Status, payment);
+                    DateOnly.FromDateTime(reservation.StartDate), DateOnly.FromDateTime(reservation.EndDate), reservation.Status, payment);
             
                 list.Add(reser);
             }
@@ -146,7 +146,7 @@ public class BookingController: ControllerBase
             
                 var hotelDtoWithFullAddress = new HotelDtoWithFullAddress(hotel.HotelUid, hotel.Name, fullAddress, hotel.Stars);
                 var reser = new ReservationDtoWithHotelAndPayment(reservation.ReservationUid, hotelDtoWithFullAddress,
-                    reservation.StartDate, reservation.EndDate, reservation.Status, payment);
+                    DateOnly.FromDateTime(reservation.StartDate), DateOnly.FromDateTime(reservation.EndDate), reservation.Status, payment);
             
                 list.Add(reser);
             }
@@ -197,7 +197,7 @@ public class BookingController: ControllerBase
             var hotelDtoWithFullAddress =
                 new HotelDtoWithFullAddress(hotel.HotelUid, hotel.Name, fullAddress, hotel.Stars);
             var res = new ReservationDtoWithHotelAndPayment(reservation.ReservationUid, hotelDtoWithFullAddress,
-                reservation.StartDate, reservation.EndDate, reservation.Status, payment);
+                DateOnly.FromDateTime(reservation.StartDate), DateOnly.FromDateTime(reservation.EndDate), reservation.Status, payment);
             
             var json = JsonSerializer.Serialize(res);
             _logger.LogInformation("Serialized JSON: {Json}", json);
@@ -259,6 +259,7 @@ public class BookingController: ControllerBase
             var countDays = difference.Days;
             var loyalty = await _loyaltyClient.GetLoyaltyAsync(username);
             var price = countDays * hotel.Price * (1 - loyalty.Discount);
+            _logger.LogInformation($"!!! {difference}, {countDays}, {loyalty}, {price}");
             
             var paymentUid = await _paymentClient.CreatePaymentAsync(price);
             var payment = await _paymentClient.GetPaymentAsync(paymentUid);
