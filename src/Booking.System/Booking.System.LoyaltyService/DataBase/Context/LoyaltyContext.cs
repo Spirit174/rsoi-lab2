@@ -1,4 +1,5 @@
 using Booking.System.LoyaltyService.DataBase.Models;
+using Booking.System.LoyaltyService.DataBase.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Booking.System.LoyaltyService.DataBase.Context;
@@ -25,7 +26,7 @@ public class LoyaltyContext(DbContextOptions<LoyaltyContext> options) : DbContex
             
             entity.Property(p => p.Status)
                 .HasConversion<string>()
-                .HasDefaultValue("BRONZE")
+                .HasDefaultValue(LoyaltyStatus.BRONZE)
                 .HasColumnName("status");
             
             entity.Property(p => p.Discount)

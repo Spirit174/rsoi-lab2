@@ -1,4 +1,5 @@
 ﻿using System.Security.Cryptography.X509Certificates;
+using System.Text.Json;
 using Booking.System.Gateway.ApiClients;
 using Booking.System.Gateway.DTO;
 using Booking.System.Gateway.Exceptions;
@@ -45,6 +46,11 @@ public class BookingController: ControllerBase
         try
         {
             var pages = await _reservationClient.GetHotelsPageAsync(page, size);
+            _logger.LogInformation("Returning hotels: {Page}, {Size}, {Total}, {ItemsCount}", 
+                pages.Page, pages.Size, pages.TotalElements, pages.Items?.Count);
+            
+            var json = JsonSerializer.Serialize(pages);
+            _logger.LogInformation("Serialized JSON: {Json}", json);
             return Ok(pages);
         }
         catch (Exception e)
