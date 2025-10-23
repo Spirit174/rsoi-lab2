@@ -28,7 +28,7 @@ CREATE TABLE reservation
     username        VARCHAR(80) NOT NULL,
     payment_uid     uuid        NOT NULL,
     hotel_id        INT REFERENCES hotel (id),
-    status          VARCHAR(20) NOT NULL
+    status          VARCHAR(20) NOT NULL DEFAULT 'PAID'
         CHECK (status IN ('PAID', 'CANCELED')),
     start_date      TIMESTAMP WITH TIME ZONE,
     end_date        TIMESTAMP WITH TIME ZONE
